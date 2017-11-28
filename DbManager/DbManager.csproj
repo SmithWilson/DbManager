@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -71,6 +73,8 @@
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFacilityService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\ManagerContext.cs" />
+    <Compile Include="Core\Services\DbService\FacilityService.cs" />
+    <Compile Include="Core\Services\DbService\RootPasswordService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -108,7 +112,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Services\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
   </ItemGroup>
