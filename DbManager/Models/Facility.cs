@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DbManager.Models
 {
-    public class Facility : INotifyPropertyChanged
+    public class Facility
     {
         public int Id { get; set; }
 
@@ -50,7 +49,5 @@ namespace DbManager.Models
         ///  Исполнитель
         /// </summary>
         public string Executor { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
