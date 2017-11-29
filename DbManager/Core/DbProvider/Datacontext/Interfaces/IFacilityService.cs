@@ -28,7 +28,7 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="count">Количество.</param>
         /// <param name="offset">Сдвиг.</param>
         /// <returns>Список сооружений.</returns>
-        Task<List<Facility>> Get(int count, int offset);
+        Task<IEnumerable<Facility>> Get(int count, int offset);
 
         /// <summary>
         /// Добавление сооружения.

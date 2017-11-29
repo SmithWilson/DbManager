@@ -74,6 +74,7 @@
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\ManagerContext.cs" />
     <Compile Include="Core\Services\DbService\FacilityService.cs" />
+    <Compile Include="Core\Services\DbService\RecordNotFoundException.cs" />
     <Compile Include="Core\Services\DbService\RootPasswordService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

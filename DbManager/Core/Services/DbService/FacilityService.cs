@@ -1,59 +1,64 @@
-﻿using DbManager.Core.DbProvider.Datacontext.Interfaces;
+﻿using DbManager.Core.DbProvider.Datacontext;
+using DbManager.Core.DbProvider.Datacontext.Interfaces;
+using DbManager.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DbManager.Models;
-using DbManager.Core.DbProvider.Datacontext;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DbManager.Core.Services.DbService
 {
     public class FacilityService : IFacilityService
     {
+        private ManagerContext _context => ManagerContext.Instance;
+
         public Task Add(Facility facility)
         {
+            if (facility == null)
+            {
+                throw new ArgumentNullException(nameof(facility));
+            }
+
             return Task.Run(() =>
             {
-                    try
-                    {
-                        if (facility == null)
-                        {
-                            return;
-                        }
-
-                        ManagerContext.Instance.Facilitys.Add(facility);
-                        ManagerContext.Instance.SaveChanges();
-                    }
-                    catch (Exception)
-                    {
-                        Debugger.Break();
-                    }
+                try
+                {
+                    _context.Facilitys.Add(facility);
+                    _context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Не удалось добавить новую запись", ex);
+                }
             });
         }
 
         public Task Change(Facility facility)
         {
+            if (facility == null)
+            {
+                throw new ArgumentNullException(nameof(facility));
+            }
+
             return Task.Run(() =>
             {
                 try
                 {
-                    if (ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id) == null)
+                    var facilty = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
+                    if (facilty != null)
                     {
-                        return;
+                        var faciltyType = facilty.GetType();
+                        foreach (var item in faciltyType.GetProperties().Skip(1))
+                        {
+                            item.SetValue(facilty, faciltyType.GetProperty(item.Name).GetValue(facility));
+                        }
+                        _context.SaveChanges();
                     }
-
-                    foreach (var item in ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id).GetType().GetProperties().Skip(1))
-                    {
-                        item.SetValue(ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id), facility.GetType().GetProperty(item.Name).GetValue(facility));
-                    }
-
-                    ManagerContext.Instance.SaveChanges();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Debugger.Break();
+                    throw new InvalidOperationException("Не удалось обновить существующую запись", ex);
                 }
             });
         }
@@ -64,50 +69,32 @@ namespace DbManager.Core.Services.DbService
             {
                 try
                 {
-                    return ManagerContext.Instance.Facilitys.ToList();
+                    return _context.Facilitys.ToList();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Debugger.Break();
-                    return null;
+                    throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
                 }
             });
         }
 
-        public Task<List<Facility>> Get(int count, int offset)
+        public Task<IEnumerable<Facility>> Get(int count, int offset)
         {
             return Task.Run(() =>
             {
                 try
                 {
-                    return ManagerContext.Instance.Facilitys
-                    .Skip(offset)
-                    .Take(count)
-                    .ToList();
+                    return _context.Facilitys.ToList().Skip(offset).Take(count);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Debugger.Break();
-                    return null;
+                    throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
                 }
             });
         }
 
-        public Task<Facility> GetById(int id)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    return ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == id);
-                }
-                catch (Exception)
-                {
-                    Debugger.Break();
-                    return null;
-                }
-            });
-        }
+        public Task<Facility> GetById(int id) =>
+            Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.Id == id));
 
         public Task Remove(int id)
         {
@@ -115,13 +102,13 @@ namespace DbManager.Core.Services.DbService
             {
                 try
                 {
-                    var facility = ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == id);
-                    ManagerContext.Instance.Facilitys.Remove(facility);
-                    ManagerContext.Instance.SaveChanges();
+                    var facility = _context.Facilitys.SingleOrDefault(f => f.Id == id);
+                    _context.Facilitys.Remove(facility);
+                    _context.SaveChanges();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Debugger.Break();
+                    throw new InvalidOperationException("Во время удаления данных произошла ошибка", ex);
                 }
             });
         }
