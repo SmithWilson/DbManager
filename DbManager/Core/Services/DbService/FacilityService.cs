@@ -45,13 +45,13 @@ namespace DbManager.Core.Services.DbService
             {
                 try
                 {
-                    var facilty = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
-                    if (facilty != null)
+                    var newFacility = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
+                    if (newFacility != null)
                     {
-                        var faciltyType = facilty.GetType();
+                        var faciltyType = newFacility.GetType();
                         foreach (var item in faciltyType.GetProperties().Skip(1))
                         {
-                            item.SetValue(facilty, faciltyType.GetProperty(item.Name).GetValue(facility));
+                            item.SetValue(newFacility, faciltyType.GetProperty(item.Name).GetValue(facility));
                         }
                         _context.SaveChanges();
                     }
