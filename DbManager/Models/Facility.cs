@@ -43,7 +43,7 @@ namespace DbManager.Models
         /// <summary>
         /// Дата сдачи в архив
         /// </summary>
-        public DateTime Data { get; set; }
+        public DateTime Date { get; set; }
 
         /// <summary>
         ///  Исполнитель

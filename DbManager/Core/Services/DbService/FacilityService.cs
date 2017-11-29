@@ -16,8 +16,6 @@ namespace DbManager.Core.Services.DbService
         {
             return Task.Run(() =>
             {
-                return Task.Run(() =>
-                {
                     try
                     {
                         if (facility == null)
@@ -32,7 +30,6 @@ namespace DbManager.Core.Services.DbService
                     {
                         Debugger.Break();
                     }
-                });
             });
         }
 
@@ -42,21 +39,15 @@ namespace DbManager.Core.Services.DbService
             {
                 try
                 {
-                    var obj = ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
-                    if (obj == null)
+                    if (ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id) == null)
                     {
                         return;
                     }
 
-                    //TODO: Переписать это говно на рефлексию, которая будет менять в бд.
-                    obj.Name = facility.Name;
-                    obj.Series = facility.Series;
-                    obj.Treaty = facility.Treaty;
-                    obj.Executor = facility.Executor;
-                    obj.Data = facility.Data;
-                    obj.Conclusion = facility.Conclusion;
-                    obj.Client = facility.Client;
-                    obj.ArchiveNumber = facility.ArchiveNumber;
+                    foreach (var item in ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id).GetType().GetProperties().Skip(1))
+                    {
+                        item.SetValue(ManagerContext.Instance.Facilitys.SingleOrDefault(f => f.Id == facility.Id), facility.GetType().GetProperty(item.Name).GetValue(facility));
+                    }
 
                     ManagerContext.Instance.SaveChanges();
                 }
