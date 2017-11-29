@@ -1,31 +1,25 @@
 ﻿using DbManager.Core.DbProvider.Datacontext;
 using DbManager.Core.DbProvider.Datacontext.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DbManager.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DbManager.Core.Services.DbServices
 {
     public class RootPasswordService : IRootPasswordService
     {
+        private ManagerContext _context => ManagerContext.Instance;
 
-        public Task<RootPassword> Get()
-        {
-            return Task.Run(() =>
-            {
-                return ManagerContext.Instance.Passwords.FirstOrDefault();
-            });
-        }
+        public Task<RootPassword> Get() =>
+            Task.Run(() => _context.Passwords.FirstOrDefault());
 
         public Task Change(string before, string after)
         {
             return Task.Run(() =>
             {
-                ManagerContext.Instance.Passwords.SingleOrDefault(p => p.Password == before).Password = after;
-                ManagerContext.Instance.SaveChanges();
+                var record = _context.Passwords.SingleOrDefault(p => p.Password == before) ?? throw new RecordNotFoundException();
+                record.Password = after;
+                _context.SaveChanges();
             });
         }
 
@@ -33,7 +27,7 @@ namespace DbManager.Core.Services.DbServices
         {
             return Task.Run(() =>
             {
-                return ManagerContext.Instance.Passwords.FirstOrDefault().Password == password ? true : false;
+                return _context.Passwords.FirstOrDefault()?.Password == password ? true : false;
             });
         }
     }
