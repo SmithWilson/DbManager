@@ -4,7 +4,7 @@ using DbManager.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DbManager.Core.Services.DbServices
+namespace DbManager.Core.Services.DbService
 {
     public class RootPasswordService : IRootPasswordService
     {

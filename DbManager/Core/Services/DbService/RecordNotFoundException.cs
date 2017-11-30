@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DbManager.Core.Services.DbServices
+namespace DbManager.Core.Services.DbService
 {
     [Serializable]
     internal class RecordNotFoundException : Exception
