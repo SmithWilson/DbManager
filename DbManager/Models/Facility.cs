@@ -51,6 +51,21 @@ namespace DbManager.Models
         /// </summary>
         public string Executor { get; set; }
 
+        /// <summary>
+        /// Наличие электронной версии
+        /// </summary>
+        public bool IsElectronicVersion { get; set; }
+
+        /// <summary>
+        /// Электронная версия
+        /// </summary>
+        public byte[] ElectronicVersion { get; set; }
+
+        /// <summary>
+        /// Место в архиве
+        /// </summary>
+        public string PlaceInArchive { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }
