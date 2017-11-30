@@ -76,12 +76,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DbProvider\Datacontext\Interfaces\IDocxFileService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFacilityService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\ManagerContext.cs" />
+    <Compile Include="Core\Services\FileServices\DocxFileService.cs" />
     <Compile Include="Core\Services\DbService\FacilityService.cs" />
     <Compile Include="Core\Services\DbService\RecordNotFoundException.cs" />
     <Compile Include="Core\Services\DbService\RootPasswordService.cs" />
+    <Compile Include="Core\Services\FileServices\FileDialogService.cs" />
+    <Compile Include="ViewModels\MainViiewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -119,8 +123,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
+    <Folder Include="Mvvm\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />

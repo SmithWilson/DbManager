@@ -4,9 +4,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DbManager"
+        xmlns:vm="clr-namespace:DbManager.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Facilitys}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ArchiveNumber}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Name}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Client}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Treaty}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Series}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Conclusion}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Date}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding Executor}"
+                                   Margin="5"/>
+                        <CheckBox IsChecked="{Binding IsElectronicVersion}"
+                                  Margin="5"
+                                  IsEnabled="False"/>
+                        <TextBlock Text="{Binding ElectronicVersion}"
+                                   Margin="5"/>
+                        <TextBlock Text="{Binding PlaceInArchive}"
+                                   Margin="5"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>
