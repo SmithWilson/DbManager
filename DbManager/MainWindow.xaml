@@ -7,44 +7,71 @@
         xmlns:vm="clr-namespace:DbManager.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Приложени"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="1"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ListView x:Name="BigBoss"
+                  Grid.Row="1"
                   ItemsSource="{Binding Facilitys}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding ArchiveNumber}"
-                                   Margin="5"/>
+                    <StackPanel>
                         <TextBlock Text="{Binding Name}"
                                    Margin="5"/>
-                        <TextBlock Text="{Binding Client}"
-                                   Margin="5"/>
                         <TextBlock Text="{Binding Treaty}"
-                                   Margin="5"/>
-                        <TextBlock Text="{Binding Series}"
-                                   Margin="5"/>
-                        <TextBlock Text="{Binding Conclusion}"
-                                   Margin="5"/>
-                        <TextBlock Text="{Binding Date}"
-                                   Margin="5"/>
-                        <TextBlock Text="{Binding Executor}"
-                                   Margin="5"/>
-                        <CheckBox IsChecked="{Binding IsElectronicVersion}"
-                                  Margin="5"
-                                  IsEnabled="False"/>
-                        <TextBlock Text="{Binding ElectronicVersion}"
-                                   Margin="5"/>
-                        <TextBlock Text="{Binding PlaceInArchive}"
                                    Margin="5"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <ContentPresenter Content="{Binding ElementName=BigBoss, Path=SelectedItem}"
+                              Grid.Column="1"
+                              Grid.Row="1">
+            <ContentPresenter.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBox Text="{Binding ArchiveNumber}"
+                                 Margin="5"/>
+                        <TextBox Text="{Binding Name}"
+                                 Margin="5"/>
+                        <TextBox Text="{Binding Client}"
+                                 Margin="5"/>
+                        <TextBox Text="{Binding Treaty}"
+                                 Margin="5"/>
+                        <TextBox Text="{Binding Series}"
+                                 Margin="5"/>
+                        <TextBox Text="{Binding Conclusion}"
+                                 Margin="5"/>
+                        <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}"
+                                    DisplayDate="{Binding Date}"
+                                    SelectedDateFormat="Long"
+                                    Margin="5"/>
+                        <TextBox Text="{Binding Executor}"
+                                 Margin="5"/>
+                        <CheckBox IsChecked="{Binding IsElectronicVersion}"
+                                  Margin="5"
+                                  IsEnabled="False"/>
+                        <Button Content="{Binding ElectronicVersion}"
+                                Margin="5"/>
+                        <TextBox Text="{Binding PlaceInArchive}"
+                                 Margin="5"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentPresenter.ContentTemplate>
+        </ContentPresenter>
     </Grid>
 </Window>
