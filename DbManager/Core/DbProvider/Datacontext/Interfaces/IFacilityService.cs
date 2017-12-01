@@ -14,6 +14,13 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         Task<Facility> GetById(int id);
 
         /// <summary>
+        /// Получение сооружения по договору <see cref="Models.Facility.Treaty"/>.
+        /// </summary>
+        /// <param name="pattern">Строка поиска.</param>
+        /// <returns>Сооружение.</returns>
+        Task<Facility> GetByTreaty(string pattern);
+
+        /// <summary>
         /// Получение всех сооружений.
         /// </summary>
         /// <returns>Список сооружений.</returns>
