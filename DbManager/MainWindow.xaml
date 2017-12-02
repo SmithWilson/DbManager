@@ -23,9 +23,20 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Push file"
+                Command="{Binding PushFileToDatabase}"
+                />
+
+            <Button Content="Get file"
+                Command="{Binding GetFileFromDatabase}"
+                />
+        </StackPanel>
+
         <ListView x:Name="BigBoss"
                   Grid.Row="1"
-                  ItemsSource="{Binding Facilitys}">
+                  ItemsSource="{Binding Facilitys}"
+                  SelectedItem="{Binding ItemFacility}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -65,7 +76,7 @@
                         <CheckBox IsChecked="{Binding IsElectronicVersion}"
                                   Margin="5"
                                   IsEnabled="False"/>
-                        <Button Content="{Binding ElectronicVersion}"
+                        <TextBlock Text="{Binding ElectronicVersion}"
                                 Margin="5"/>
                         <TextBox Text="{Binding PlaceInArchive}"
                                  Margin="5"/>

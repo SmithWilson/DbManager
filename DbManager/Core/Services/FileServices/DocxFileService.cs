@@ -25,7 +25,7 @@ namespace DbManager.Core.Services.FileService
             {
                 try
                 {
-                    using (var fs = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName),FileMode.CreateNew))
+                    using (var fs = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName + ".docx"),FileMode.Create))
                     {
                         fs.Write(file, 0, file.Length);
                         fs.Close();
@@ -41,6 +41,10 @@ namespace DbManager.Core.Services.FileService
         public Task PutDocxFileToDatabase(int id, string path)
         {
             var file = _context.Facilitys.SingleOrDefault(f => f.Id == id) ?? throw new FileNotFoundException();
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException();
+            }
 
             return Task.Run(() =>
             {
