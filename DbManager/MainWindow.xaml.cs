@@ -14,9 +14,10 @@ namespace DbManager
         public MainWindow()
         {
             InitializeComponent();
+            //Method();
             var vm = new MainViewModel();
             DataContext = vm;
-            //Method();
+           
         }
 
         public async void Method()
@@ -26,7 +27,7 @@ namespace DbManager
 
             await root.Change("qwerty123", "password");
 
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 10; i++)
             {
                 await facility.Add(new Models.Facility
                 {

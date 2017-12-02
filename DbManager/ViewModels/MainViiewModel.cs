@@ -5,6 +5,8 @@ using DbManager.Core.Services.FileService;
 using DbManager.Models;
 using DbManager.Mvvm;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -63,13 +65,37 @@ namespace DbManager.ViewModels
 
         private async Task PushFile()
         {
-            var path = await _fileDialogService.OpenDialog();
-            await _docxFileService.PutDocxFileToDatabase(ItemFacility.Id, path);
+            if (ItemFacility == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var path = await _fileDialogService.OpenDialog();
+                await _docxFileService.PutDocxFileToDatabase(ItemFacility.Id, path);
+            }
+            catch (System.Exception)
+            {
+                return;
+            }
         }
 
         private async Task GetFile()
         {
-            await _docxFileService.GetDoxcFileFromDatabase(ItemFacility.Id, ItemFacility.Name);
+            if (ItemFacility == null)
+            {
+                return;
+            }
+
+            try
+            {
+                await _docxFileService.GetDoxcFileFromDatabase(ItemFacility.Id, ItemFacility.NameElectronicVersion);
+            }
+            catch (System.Exception)
+            {
+                Debugger.Break();
+            }
         }
         #endregion
     }

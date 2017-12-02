@@ -53,6 +53,11 @@ namespace DbManager.Models
         public bool IsElectronicVersion { get; set; }
 
         /// <summary>
+        /// Имя.Расширение электронной версии.
+        /// </summary>
+        public string NameElectronicVersion { get; set; }
+
+        /// <summary>
         /// Электронная версия
         /// </summary>
         public byte[] ElectronicVersion { get; set; }

@@ -25,7 +25,7 @@ namespace DbManager.Core.Services.FileService
             {
                 try
                 {
-                    using (var fs = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName + ".docx"),FileMode.Create))
+                    using (var fs = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName),FileMode.Create))
                     {
                         fs.Write(file, 0, file.Length);
                         fs.Close();
@@ -53,7 +53,10 @@ namespace DbManager.Core.Services.FileService
                     file.ElectronicVersion = new byte[fs.Length];
                     fs.Read(file.ElectronicVersion, 0, (int)fs.Length);
                     fs.Close();
+
+                    file.NameElectronicVersion = Path.GetFileName(path);
                     file.IsElectronicVersion = true;
+
                     _context.SaveChanges();
                 }
             });
