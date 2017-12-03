@@ -25,7 +25,7 @@ namespace DbManager
             IFacilityService facility = new FacilityService();
             IRootPasswordService root = new RootPasswordService();
 
-            await root.Change("qwerty123", "password");
+            //await root.Change("qwerty123", "password");
 
             for (var i = 0; i < 10; i++)
             {

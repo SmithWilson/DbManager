@@ -95,8 +95,8 @@ namespace DbManager.Core.Services.DbService
         public Task<Facility> GetById(int id) =>
             Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.Id == id));
 
-        public Task<Facility> GetByTreaty(string pattern) =>
-            Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.Treaty == pattern));
+        public Task<List<Facility>> GetByTreaty(string pattern) =>
+            Task.Run(() => _context.Facilitys.Where(f => f.Treaty.Contains(pattern)).ToList());
 
         public Task Remove(int id)
         {

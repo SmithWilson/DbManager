@@ -24,6 +24,12 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal">
+            <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
+                     Width="150"/>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal"
+                    Grid.Column="1">
             <Button Content="Push file"
                 Command="{Binding PushFileToDatabase}"
                 />

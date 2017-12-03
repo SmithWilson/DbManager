@@ -18,7 +18,7 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// </summary>
         /// <param name="pattern">Строка поиска.</param>
         /// <returns>Сооружение.</returns>
-        Task<Facility> GetByTreaty(string pattern);
+        Task<List<Facility>> GetByTreaty(string pattern);
 
         /// <summary>
         /// Получение всех сооружений.
