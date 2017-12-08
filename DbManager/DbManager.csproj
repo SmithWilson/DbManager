@@ -79,17 +79,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DbProvider\Datacontext\Interfaces\IDatabaseMigrationService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IDocxFileService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFacilityService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFileDialogService.cs" />
+    <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFileSerializationService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
+    <Compile Include="Core\DbProvider\Datacontext\Interfaces\ISerializationService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\ManagerContext.cs" />
     <Compile Include="Core\Services\Converters\SearchVisibilityConverter.cs" />
+    <Compile Include="Core\Services\DbService\DatabaseMigrationService.cs" />
     <Compile Include="Core\Services\FileServices\DocxFileService.cs" />
     <Compile Include="Core\Services\DbService\FacilityService.cs" />
     <Compile Include="Core\Services\DbService\RecordNotFoundException.cs" />
     <Compile Include="Core\Services\DbService\RootPasswordService.cs" />
     <Compile Include="Core\Services\FileServices\FileDialogService.cs" />
+    <Compile Include="Core\Services\FileServices\FileSerializationService.cs" />
+    <Compile Include="Core\Services\Serialization\SerializationService.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\DelegateCommand{T}.cs" />
     <Compile Include="ViewModels\MainViiewModel.cs" />

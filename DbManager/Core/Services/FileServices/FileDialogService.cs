@@ -12,7 +12,7 @@ namespace DbManager.Core.Services.FileService
             return Task.Run(() =>
             {
                 var dialog = new OpenFileDialog();
-                dialog.Filter = "Документы(*.doc;*.docx;*.pdf;*.txt)|**.doc;*.docx;*.pdf;*.txt" +"|Все файлы (*.*)|*.*";
+                dialog.Filter = "Документы(*.doc;*.docx;*.pdf;*.txt)|**.doc;*.docx;*.pdf;*.txt" + "|Json-файлы (*.json)|*.json" + "|Все файлы (*.*)|*.*";
                 dialog.CheckFileExists = true;
                 dialog.Multiselect = false;
                 if (dialog.ShowDialog() == true)
