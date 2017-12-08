@@ -25,5 +25,12 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="password">Пароль.</param>
         /// <returns>Логическое значение.</returns>
         Task<bool> Rigth(string password);
+
+        /// <summary>
+        /// Сброс пароля.
+        /// </summary>
+        /// <param name="password">Текущий пароль.</param>
+        /// <returns></returns>
+        Task Reset(string password);
     }
 }

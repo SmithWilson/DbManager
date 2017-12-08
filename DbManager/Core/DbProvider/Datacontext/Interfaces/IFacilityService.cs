@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace DbManager.Core.DbProvider.Datacontext.Interfaces
 {
+    //TRUNCATE TABLE _context.Database.ExecuteSqlCommand("TRUNCATE TABLE RootPasswords");
     public interface IFacilityService
     {
         /// <summary>
@@ -54,5 +55,11 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="facility">Новые данные.</param>
         /// <returns></returns>
         Task Change(Facility facility);
+
+        /// <summary>
+        /// Сброс таблицы.
+        /// </summary>
+        /// <returns></returns>
+        Task Reset();
     }
 }

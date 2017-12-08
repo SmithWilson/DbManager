@@ -30,5 +30,20 @@ namespace DbManager.Core.Services.DbService
                 return _context.Passwords.FirstOrDefault()?.Password == password ? true : false;
             });
         }
+
+        public Task Reset(string password)
+        {
+            return Task.Run(() =>
+            {
+                var pass = _context.Passwords.SingleOrDefault(p => p.Password == password) ?? throw new RecordNotFoundException();
+                if (!(pass.Password == password))
+                {
+                    return;
+                }
+
+                pass.Password = DbManager.Properties.Settings.Default.defaultPassword;
+                _context.SaveChanges();
+            });
+        }
     }
 }

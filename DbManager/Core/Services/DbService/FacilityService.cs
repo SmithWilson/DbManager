@@ -114,5 +114,8 @@ namespace DbManager.Core.Services.DbService
                 }
             });
         }
+
+        public Task Reset
+            => Task.Run(() => _context.Database.ExecuteSqlCommand("TRUNCATE TABLE Facilities"));
     }
 }

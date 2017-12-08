@@ -23,25 +23,23 @@ namespace DbManager
         public async void Method()
         {
             IFacilityService facility = new FacilityService();
-            IRootPasswordService root = new RootPasswordService();
+            IRootPasswordService root = new RootPasswordService(); 
 
-            //await root.Change("qwerty123", "password");
-
-            for (var i = 0; i < 10; i++)
-            {
-                await facility.Add(new Models.Facility
-                {
-                    ArchiveNumber = i*2,
-                    Series = $"{i} series",
-                    Client = $"{i} client",
-                    Conclusion = $"{i} conclusion",
-                    Date = DateTime.Now,
-                    Executor = $"{i} executor",
-                    Name = $"{i} name",
-                    PlaceInArchive = $"{i} полка {i * 3} ряд",
-                    Treaty = $"{i} treaty"
-                });
-            }
+            //for (var i = 0; i < 10; i++)
+            //{
+            //    await facility.Add(new Models.Facility
+            //    {
+            //        ArchiveNumber = i*2,
+            //        Series = $"{i} series",
+            //        Client = $"{i} client",
+            //        Conclusion = $"{i} conclusion",
+            //        Date = DateTime.Now,
+            //        Executor = $"{i} executor",
+            //        Name = $"{i} name",
+            //        PlaceInArchive = $"{i} полка {i * 3} ряд",
+            //        Treaty = $"{i} treaty"
+            //    });
+            //}
         }
     }
 }

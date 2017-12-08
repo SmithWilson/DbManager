@@ -90,6 +90,10 @@ namespace DbManager.ViewModels
             {
                 Facilitys.Add(item);
             }
+
+            //await _rootPasswordService.Change("password", "heh");
+
+            //await _rootPasswordService.Reset("heh");
         }
 
         private async Task PushFile()

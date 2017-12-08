@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace DbManager.Models
 {
+    [DebuggerDisplay("Id - {Id}, Treaty - {Treaty}")]
     public class Facility : INotifyPropertyChanged
     {
         public int Id { get; set; }

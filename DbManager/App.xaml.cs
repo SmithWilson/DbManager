@@ -17,13 +17,21 @@ namespace DbManager
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (!_context.Passwords.Any())
+            try
             {
-                _context.Passwords.Add(new Models.RootPassword
+                if (!_context.Passwords.Any())
                 {
-                    Password = DbManager.Properties.Settings.Default.defaultPassword
-                });
-                _context.SaveChanges();
+                    _context.Passwords.Add(new Models.RootPassword
+                    {
+                        Password = DbManager.Properties.Settings.Default.defaultPassword
+                    });
+                    _context.SaveChanges();
+                }
+            }
+            catch (System.Exception)
+            {
+                //Костыль.
+                OnStartup(e);
             }
         }
     }
