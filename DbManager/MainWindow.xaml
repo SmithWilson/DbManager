@@ -4,14 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DbManager"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:vm="clr-namespace:DbManager.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-        Title="Приложени"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        WindowStyle="SingleBorderWindow">
+        WindowStyle="SingleBorderWindow"
+        Title="Приложени"
+        Name="RootElement">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -26,17 +28,35 @@
         <StackPanel Orientation="Horizontal">
             <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
                      Width="150"/>
+            <Button Command="{Binding AddNewFacilityCommnd}"
+                    ToolTip="Добавить"
+                    Width="40"
+                    Margin="10 0 0 0">
+                <fa:FontAwesome Icon="Plus"
+                                FontSize="20"/>
+            </Button>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal"
-                    Grid.Column="1">
-            <Button Content="Push file"
-                Command="{Binding PushFileToDatabase}"
-                />
+                    Grid.Column="1"
+                    Margin="5 0 0 0">
+            <Button Command="{Binding PushFileToDatabaseCommand }"
+                    ToolTip="Загрузить">
+                <fa:FontAwesome Icon="Upload"
+                                FontSize="20"/>
+            </Button>
 
-            <Button Content="Get file"
-                Command="{Binding GetFileFromDatabase}"
-                />
+            <Button Command="{Binding GetFileFromDatabaseCommand }"
+                    ToolTip="Скачать">
+                <fa:FontAwesome Icon="Download"
+                                FontSize="20"/>
+            </Button>
+
+            <Button Command="{Binding RemoveCommand}"
+                    ToolTip="Удалить">
+                <fa:FontAwesome Icon="TrashOutline"
+                                FontSize="20"/>
+            </Button>
         </StackPanel>
 
         <ListView x:Name="BigBoss"
@@ -82,10 +102,25 @@
                         <CheckBox IsChecked="{Binding IsElectronicVersion}"
                                   Margin="5"
                                   IsEnabled="False"/>
-                        <TextBlock Text="{Binding ElectronicVersion}"
+                        <TextBlock Text="{Binding NameElectronicVersion}"
                                 Margin="5"/>
                         <TextBox Text="{Binding PlaceInArchive}"
                                  Margin="5"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button Content="Сохранить"
+                                    Command="{Binding ElementName=RootElement, Path=DataContext.SaveOrChangeCommand}"
+                                    Width="200"
+                                    Height="30"
+                                    Margin="10" />
+
+                            <Button Content="Отмена"
+                                    Command="{Binding ElementName=RootElement, Path=DataContext.AnnulmentCommand}"
+                                    Width="200"
+                                    Height="30"
+                                />
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ContentPresenter.ContentTemplate>

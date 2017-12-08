@@ -22,6 +22,10 @@ namespace DbManager.ViewModels
         #region Fields
         private ICommand _pushFileToDatabase;
         private ICommand _getFileFromDatabase;
+        private ICommand _addNewFacility;
+        private ICommand _saveOrChange;
+        private ICommand _annulment;
+        private ICommand _remove;
 
         private IFacilityService _facilityService;
         private IRootPasswordService _rootPasswordService;
@@ -52,7 +56,6 @@ namespace DbManager.ViewModels
         #region Properties
         public ObservableCollection<Facility> Facilitys { get; set; }
 
-        [DoNotNotify]
         public Facility ItemFacility { get; set; }
 
         public string Search { get; set; }
@@ -75,11 +78,23 @@ namespace DbManager.ViewModels
 
 
         #region Commands
-        public ICommand PushFileToDatabase => _pushFileToDatabase ??
+        public ICommand PushFileToDatabaseCommand => _pushFileToDatabase ??
             (_pushFileToDatabase = new DelegateCommand(async () => await PushFile()));
 
-        public ICommand GetFileFromDatabase => _getFileFromDatabase ??
+        public ICommand GetFileFromDatabaseCommand => _getFileFromDatabase ??
             (_getFileFromDatabase = new DelegateCommand(async () => await GetFile()));
+
+        public ICommand AddNewFacilityCommnd => _addNewFacility ??
+            (_addNewFacility = new DelegateCommand(() => AddNewFacility()));
+
+        public ICommand SaveOrChangeCommand => _saveOrChange ??
+            (_saveOrChange = new DelegateCommand(async() => await SaveOrChange()));
+
+        public ICommand AnnulmentCommand => _annulment ??
+            (_annulment = new DelegateCommand(() => Annulment()));
+
+        public ICommand RemoveCommand => _remove ??
+            (_remove = new DelegateCommand(async() => await Remove()));
         #endregion
 
 
@@ -96,6 +111,63 @@ namespace DbManager.ViewModels
             //await _rootPasswordService.Reset("heh");
         }
 
+        private void AddNewFacility()
+        {
+            try
+            {
+                var facility = new Facility();
+                Facilitys.Add(facility);
+                ItemFacility = facility;
+            }
+            catch (Exception ex)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private async Task SaveOrChange()
+        {
+            try
+            {
+                await _facilityService.SaveOrUpdate(ItemFacility);
+            }
+            catch (Exception ex)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private void Annulment()
+        {
+            try
+            {
+                Facilitys.Clear();
+                Initialization();
+                ItemFacility = null;
+            }
+            catch (Exception ex)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private async Task Remove()
+        {
+            try
+            {
+                await _facilityService.Remove(ItemFacility.Id);
+                Facilitys.Remove(ItemFacility);
+            }
+            catch (Exception ex)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
         private async Task PushFile()
         {
             if (ItemFacility == null)
@@ -110,13 +182,14 @@ namespace DbManager.ViewModels
             }
             catch (System.Exception)
             {
+                Debugger.Break();
                 return;
             }
         }
 
         private async Task GetFile()
         {
-            if (ItemFacility == null)
+            if (ItemFacility == null || ItemFacility.ElectronicVersion == null)
             {
                 return;
             }
@@ -128,6 +201,7 @@ namespace DbManager.ViewModels
             catch (System.Exception)
             {
                 Debugger.Break();
+                return;
             }
         }
         #endregion

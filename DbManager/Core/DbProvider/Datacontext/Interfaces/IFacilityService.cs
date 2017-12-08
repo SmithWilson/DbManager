@@ -56,6 +56,8 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <returns></returns>
         Task Change(Facility facility);
 
+        Task SaveOrUpdate(Facility facility);
+
         /// <summary>
         /// Сброс таблицы.
         /// </summary>

@@ -42,7 +42,7 @@ namespace DbManager.Models
         /// <summary>
         /// Дата сдачи в архив
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         /// <summary>
         ///  Исполнитель
@@ -57,7 +57,7 @@ namespace DbManager.Models
         /// <summary>
         /// Имя.Расширение электронной версии.
         /// </summary>
-        public string NameElectronicVersion { get; set; }
+        public string NameElectronicVersion { get; set; } = "Электронная версия отсутствует";
 
         /// <summary>
         /// Электронная версия

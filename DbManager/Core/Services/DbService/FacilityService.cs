@@ -3,6 +3,7 @@ using DbManager.Core.DbProvider.Datacontext.Interfaces;
 using DbManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -115,7 +116,36 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
-        public Task Reset
+        public Task SaveOrUpdate(Facility facility)
+        {
+            if (facility == null)
+            {
+                throw new ArgumentNullException(nameof(facility));
+            }
+
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var update = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
+                    if (update == null)
+                    {
+                        Add(facility);
+                    }
+                    else
+                    {
+                        Change(update);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debugger.Break();
+                    throw new InvalidOperationException($"Во время обновления данных произошла ошибка", ex);
+                }
+            });
+        }
+
+        public Task Reset()
             => Task.Run(() => _context.Database.ExecuteSqlCommand("TRUNCATE TABLE Facilities"));
     }
 }
