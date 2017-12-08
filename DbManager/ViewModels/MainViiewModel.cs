@@ -59,6 +59,8 @@ namespace DbManager.ViewModels
         public Facility ItemFacility { get; set; }
 
         public string Search { get; set; }
+
+        public bool SearchVisibility { get; set; } = true;
         #endregion
 
 
@@ -69,9 +71,11 @@ namespace DbManager.ViewModels
         {
                 if (String.IsNullOrWhiteSpace(Search))
                 {
+                    SearchVisibility = true;
                     Facilitys = new ObservableCollection<Facility>(await _facilityService.Get());
                     return;
                 }
+            SearchVisibility = false;
             Facilitys = new ObservableCollection<Facility>(await _facilityService.GetByTreaty(Search));
         }
         #endregion

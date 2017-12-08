@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:DbManager"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:vm="clr-namespace:DbManager.ViewModels"
+        xmlns:converters="clr-namespace:DbManager.Core.Services.Converters"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         ResizeMode="NoResize"
@@ -15,6 +16,10 @@
         Title="Приложени"
         Name="RootElement">
     <Grid>
+        <Grid.Resources>
+            <converters:SearchVisibilityConverter x:Key="SearchVisibilityConverter"/>
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
@@ -26,12 +31,25 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
-                     Width="150"/>
+            <Grid Background="White" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 10 0 0">
+                <TextBlock Margin="15 5 0 5" 
+                           Width="140" 
+                           Text="Поиск..." 
+                           VerticalAlignment="Center"
+                           Foreground="LightSteelBlue" 
+                           Visibility="{Binding SearchVisibility, Converter={StaticResource SearchVisibilityConverter}}" />
+
+                <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"
+                         Padding="5"
+                         Width="140"
+                         VerticalAlignment="Center"/>
+            </Grid>
             <Button Command="{Binding AddNewFacilityCommnd}"
                     ToolTip="Добавить"
-                    Width="40"
-                    Margin="10 0 0 0">
+                    Width="30"
+                    Height="30"
+                    Margin="10">
                 <fa:FontAwesome Icon="Plus"
                                 FontSize="20"/>
             </Button>
@@ -41,19 +59,28 @@
                     Grid.Column="1"
                     Margin="5 0 0 0">
             <Button Command="{Binding PushFileToDatabaseCommand }"
-                    ToolTip="Загрузить">
+                    ToolTip="Загрузить"
+                    Width="30"
+                    Height="30"
+                    Margin="10">
                 <fa:FontAwesome Icon="Upload"
                                 FontSize="20"/>
             </Button>
 
             <Button Command="{Binding GetFileFromDatabaseCommand }"
-                    ToolTip="Скачать">
+                    ToolTip="Скачать"
+                    Width="30"
+                    Height="30"
+                    Margin="10">
                 <fa:FontAwesome Icon="Download"
                                 FontSize="20"/>
             </Button>
 
             <Button Command="{Binding RemoveCommand}"
-                    ToolTip="Удалить">
+                    ToolTip="Удалить"
+                    Width="30"
+                    Height="30"
+                    Margin="10">
                 <fa:FontAwesome Icon="TrashOutline"
                                 FontSize="20"/>
             </Button>

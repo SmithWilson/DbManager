@@ -84,6 +84,7 @@
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFileDialogService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\ManagerContext.cs" />
+    <Compile Include="Core\Services\Converters\SearchVisibilityConverter.cs" />
     <Compile Include="Core\Services\FileServices\DocxFileService.cs" />
     <Compile Include="Core\Services\DbService\FacilityService.cs" />
     <Compile Include="Core\Services\DbService\RecordNotFoundException.cs" />
