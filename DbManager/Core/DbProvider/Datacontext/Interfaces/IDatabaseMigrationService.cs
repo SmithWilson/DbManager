@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DbManager.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +11,17 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
     public interface IDatabaseMigrationService
     {
         /// <summary>
-        /// Импорт базы данных в файл.json
+        /// Импорт данных из файла.xls
         /// </summary>
+        /// <param name="path">Путь.</param>
         /// <returns></returns>
-        Task Import();
-
-
+        Task Import(string path);
+        
         /// <summary>
-        /// Экспорт базы данных из файл.json
+        /// Экспорт данных из базы данных.
         /// </summary>
+        /// <param name="dataTable">Таблица.</param>
         /// <returns></returns>
-        Task Export();
+        Task Export(DataTable dataTable);
     }
 }
