@@ -8,8 +8,11 @@ namespace DbManager.Core.Services.DbService
 {
     public class RootPasswordService : IRootPasswordService
     {
+        #region Fields
         private ManagerContext _context => ManagerContext.Instance;
+        #endregion
 
+        #region Methods
         public Task<RootPassword> Get() =>
             Task.Run(() => _context.Passwords.FirstOrDefault());
 
@@ -44,6 +47,7 @@ namespace DbManager.Core.Services.DbService
                 pass.Password = DbManager.Properties.Settings.Default.defaultPassword;
                 _context.SaveChanges();
             });
-        }
+        } 
+        #endregion
     }
 }

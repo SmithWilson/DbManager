@@ -8,8 +8,12 @@ using System.Windows.Data;
 
 namespace DbManager.Core.Services.Converters
 {
+    /// <summary>
+    /// Преобразует значение(value) в параметр состояние видимости.
+    /// </summary>
     public class SearchVisibilityConverter : IValueConverter
     {
+        #region IValueConverter Implementation
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if ((bool)value)
@@ -25,6 +29,7 @@ namespace DbManager.Core.Services.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
-        }
+        } 
+        #endregion
     }
 }

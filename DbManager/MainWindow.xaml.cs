@@ -1,7 +1,6 @@
 ﻿using DbManager.Core.DbProvider.Datacontext.Interfaces;
 using DbManager.Core.Services.DbService;
 using DbManager.ViewModels;
-using System;
 using System.Windows;
 
 namespace DbManager

@@ -10,12 +10,20 @@ namespace DbManager.Core.Services.FileService
 {
     public class DocxFileService : IDocxFileService
     {
+        #region Fields
         private ManagerContext _context;
+        #endregion
+
+
+        #region Ctors
         public DocxFileService()
         {
             _context = ManagerContext.Instance;
         }
+        #endregion
 
+
+        #region Methods
         //TODO: Ловить его на руже.
         public Task GetDoxcFileFromDatabase(int id, string fileName)
         {
@@ -25,7 +33,7 @@ namespace DbManager.Core.Services.FileService
             {
                 try
                 {
-                    using (var fs = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName),FileMode.Create))
+                    using (var fs = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName), FileMode.Create))
                     {
                         fs.Write(file, 0, file.Length);
                         fs.Close();
@@ -60,6 +68,7 @@ namespace DbManager.Core.Services.FileService
                     _context.SaveChanges();
                 }
             });
-        }
+        } 
+        #endregion
     }
 }

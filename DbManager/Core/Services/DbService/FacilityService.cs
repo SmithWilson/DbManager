@@ -11,8 +11,12 @@ namespace DbManager.Core.Services.DbService
 {
     public class FacilityService : IFacilityService
     {
+        #region Fields
         private ManagerContext _context => ManagerContext.Instance;
+        #endregion
 
+
+        #region Methods
         public Task Add(Facility facility)
         {
             if (facility == null)
@@ -146,6 +150,11 @@ namespace DbManager.Core.Services.DbService
         }
 
         public Task Reset()
-            => Task.Run(() => _context.Database.ExecuteSqlCommand("TRUNCATE TABLE Facilities"));
+            => Task.Run(() =>
+                {
+                    _context.Database.ExecuteSqlCommand("TRUNCATE TABLE Facilities");
+                    _context.SaveChanges();
+                }); 
+        #endregion
     }
 }

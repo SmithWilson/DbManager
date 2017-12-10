@@ -17,33 +17,36 @@
         Name="RootElement">
     <Grid>
         <Grid.Resources>
-            <converters:SearchVisibilityConverter x:Key="SearchVisibilityConverter"/>
+            <converters:SearchVisibilityConverter x:Key="SearchVisibilityConverter" />
         </Grid.Resources>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
+            <RowDefinition Height="50" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <Grid Background="White" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 10 0 0">
-                <TextBlock Margin="15 5 0 5" 
-                           Width="140" 
-                           Text="Поиск..." 
+            <Grid Background="White"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Margin="5 10 0 0">
+                <TextBlock Margin="15 5 0 5"
+                           Width="140"
+                           Text="Поиск..."
                            VerticalAlignment="Center"
-                           Foreground="LightSteelBlue" 
+                           Foreground="Gray"
                            Visibility="{Binding SearchVisibility, Converter={StaticResource SearchVisibilityConverter}}" />
 
                 <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
                          Background="Transparent"
                          Padding="5"
                          Width="140"
-                         VerticalAlignment="Center"/>
+                         VerticalAlignment="Center" />
             </Grid>
             <Button Command="{Binding AddNewFacilityCommnd}"
                     ToolTip="Добавить"
@@ -51,10 +54,10 @@
                     Height="30"
                     Margin="10">
                 <fa:FontAwesome Icon="Plus"
-                                FontSize="20"/>
+                                FontSize="20" />
             </Button>
         </StackPanel>
-        
+
         <StackPanel Orientation="Horizontal"
                     Grid.Column="1"
                     Margin="5 0 0 0">
@@ -64,7 +67,7 @@
                     Height="30"
                     Margin="10">
                 <fa:FontAwesome Icon="Upload"
-                                FontSize="20"/>
+                                FontSize="20" />
             </Button>
 
             <Button Command="{Binding GetFileFromDatabaseCommand }"
@@ -73,7 +76,24 @@
                     Height="30"
                     Margin="10">
                 <fa:FontAwesome Icon="Download"
-                                FontSize="20"/>
+                                FontSize="20" />
+            </Button>
+            <Button Command="{Binding ImportCommand}"
+                    ToolTip="Импорт"
+                    Width="30"
+                    Height="30"
+                    Margin="10">
+                <fa:FontAwesome Icon="Upload"
+                                FontSize="20" />
+            </Button>
+
+            <Button Command="{Binding ExportCommand}"
+                    ToolTip="Экспорт"
+                    Width="30"
+                    Height="30"
+                    Margin="10">
+                <fa:FontAwesome Icon="Download"
+                                FontSize="20" />
             </Button>
 
             <Button Command="{Binding RemoveCommand}"
@@ -82,7 +102,7 @@
                     Height="30"
                     Margin="10">
                 <fa:FontAwesome Icon="TrashOutline"
-                                FontSize="20"/>
+                                FontSize="20" />
             </Button>
         </StackPanel>
 
@@ -94,46 +114,45 @@
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Name}"
-                                   Margin="5"/>
+                                   Margin="5" />
                         <TextBlock Text="{Binding Treaty}"
-                                   Margin="5"/>
+                                   Margin="5" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <ContentPresenter Content="{Binding ElementName=BigBoss, Path=SelectedItem}"
-                              Grid.Column="1"
-                              Grid.Row="1">
+                          Grid.Column="1"
+                          Grid.Row="1">
             <ContentPresenter.ContentTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBox Text="{Binding ArchiveNumber}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <TextBox Text="{Binding Name}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <TextBox Text="{Binding Client}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <TextBox Text="{Binding Treaty}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <TextBox Text="{Binding Series}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <TextBox Text="{Binding Conclusion}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}"
                                     DisplayDate="{Binding Date}"
                                     SelectedDateFormat="Long"
-                                    Margin="5"/>
+                                    Margin="5" />
                         <TextBox Text="{Binding Executor}"
-                                 Margin="5"/>
+                                 Margin="5" />
                         <CheckBox IsChecked="{Binding IsElectronicVersion}"
                                   Margin="5"
-                                  IsEnabled="False"/>
+                                  IsEnabled="False" />
                         <TextBlock Text="{Binding NameElectronicVersion}"
-                                Margin="5"/>
+                                   Margin="5" />
                         <TextBox Text="{Binding PlaceInArchive}"
-                                 Margin="5"/>
-
+                                 Margin="5" />
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
                             <Button Content="Сохранить"
@@ -145,12 +164,12 @@
                             <Button Content="Отмена"
                                     Command="{Binding ElementName=RootElement, Path=DataContext.AnnulmentCommand}"
                                     Width="200"
-                                    Height="30"
-                                />
+                                    Height="30" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ContentPresenter.ContentTemplate>
         </ContentPresenter>
+
     </Grid>
 </Window>

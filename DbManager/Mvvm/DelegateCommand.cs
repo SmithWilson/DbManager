@@ -10,11 +10,18 @@ namespace DbManager.Mvvm
 {
     public class DelegateCommand : ICommand
     {
+        #region Fields
         private Action _action;
+        #endregion
 
+
+        #region Ctors
         public DelegateCommand(Action action)
-            => _action = action ?? throw new ArgumentNullException(nameof(action));
+           => _action = action ?? throw new ArgumentNullException(nameof(action));
+        #endregion
 
+
+        #region ICommand Implementation
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
@@ -30,6 +37,7 @@ namespace DbManager.Mvvm
             {
                 Debugger.Break();
             }
-        }
+        } 
+        #endregion
     }
 }

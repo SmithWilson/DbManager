@@ -1,18 +1,17 @@
 ﻿using DbManager.Core.DbProvider.Datacontext;
 using DbManager.Core.DbProvider.Datacontext.Interfaces;
 using DbManager.Core.Services.DbService;
+using DbManager.Core.Services.Extension;
 using DbManager.Core.Services.FileService;
 using DbManager.Models;
 using DbManager.Mvvm;
-using PropertyChanged;
+
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace DbManager.ViewModels
@@ -26,11 +25,14 @@ namespace DbManager.ViewModels
         private ICommand _saveOrChange;
         private ICommand _annulment;
         private ICommand _remove;
+        private ICommand _export;
+        private ICommand _import;
 
         private IFacilityService _facilityService;
         private IRootPasswordService _rootPasswordService;
         private IFileDialogService _fileDialogService;
         private IDocxFileService _docxFileService;
+        private IDatabaseMigrationService _migrationService;
 
         private ManagerContext _context;
         #endregion
@@ -43,6 +45,7 @@ namespace DbManager.ViewModels
             _rootPasswordService = new RootPasswordService();
             _fileDialogService = new FileDialogService();
             _docxFileService = new DocxFileService();
+            _migrationService = new DatabaseMigrationService();
 
             _context = ManagerContext.Instance;
 
@@ -99,12 +102,33 @@ namespace DbManager.ViewModels
 
         public ICommand RemoveCommand => _remove ??
             (_remove = new DelegateCommand(async() => await Remove()));
+
+        public ICommand ImportCommand => _import ??
+            (_import = new DelegateCommand(async () => await ImportMethod()));
+
+        public ICommand ExportCommand => _export ??
+            (_export = new DelegateCommand(async () => await ExportMethod()));
         #endregion
 
 
         #region Non-public Methods
         private async void Initialization()
         {
+            //for (int i = 0; i < 98; i++)
+            //{
+            //    await _facilityService.Add(new Facility
+            //    {
+            //        ArchiveNumber = i * 2,
+            //        Series = $"{i} series",
+            //        Client = $"{i} client",
+            //        Conclusion = $"{i} conclusion",
+            //        Date = DateTime.Now,
+            //        Executor = $"{i} executor",
+            //        Name = $"{i} name",
+            //        PlaceInArchive = $"{i} полка {i * 3} ряд",
+            //        Treaty = $"{i} treaty"
+            //    });
+            //}
             foreach (var item in await _facilityService.Get())
             {
                 Facilitys.Add(item);
@@ -147,7 +171,7 @@ namespace DbManager.ViewModels
         {
             try
             {
-                Facilitys.Clear();
+                Facilitys.Clear(); 
                 Initialization();
                 ItemFacility = null;
             }
@@ -203,6 +227,34 @@ namespace DbManager.ViewModels
                 await _docxFileService.GetDoxcFileFromDatabase(ItemFacility.Id, ItemFacility.NameElectronicVersion);
             }
             catch (System.Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        public async Task ImportMethod()
+        {
+            try
+            {
+                await _migrationService.Import(await _fileDialogService.OpenDialog());
+                Initialization();
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        public async Task ExportMethod()
+        {
+            try
+            {
+                var facilitys = await _facilityService.Get();
+                await _migrationService.Export(facilitys.ToDataTable());
+            }
+            catch (Exception)
             {
                 Debugger.Break();
                 return;
