@@ -13,5 +13,11 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// </summary>
         /// <returns>Путь к файлу.</returns>
         Task<string> OpenDialog();
+
+        /// <summary>
+        /// Выбор файлов 
+        /// </summary>
+        /// <returns></returns>
+        Task<List<string>> OpenDialogGetFiles();
     }
 }
