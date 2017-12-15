@@ -1,5 +1,6 @@
 ﻿using DbManager.Models;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
 namespace DbManager.Core.DbProvider.Datacontext.Interfaces
@@ -22,10 +23,23 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         Task<List<Facility>> GetByTreaty(string pattern);
 
         /// <summary>
+        /// Получение сооружения по архивному номеру <see cref="Facility.ArchiveNumber"/>
+        /// </summary>
+        /// <param name="archiveNumber"></param>
+        /// <returns></returns>
+        Task<Facility> GetByArchiveNumber(int archiveNumber);
+
+        /// <summary>
+        /// Получение всех сооружений.
+        /// </summary>
+        /// <returns>Результат запроса по сооруженям из базы данных.</returns>
+        Task<DbRawSqlQuery<Facility>> GetResultQuery();
+
+        /// <summary>
         /// Получение всех сооружений.
         /// </summary>
         /// <returns>Список сооружений.</returns>
-        Task<List<Facility>> Get();
+        Task<List<Facility>> GetList();
 
         /// <summary>
         /// Получение сооружений.

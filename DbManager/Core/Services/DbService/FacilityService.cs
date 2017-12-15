@@ -3,6 +3,7 @@ using DbManager.Core.DbProvider.Datacontext.Interfaces;
 using DbManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,7 +68,23 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
-        public Task<List<Facility>> Get()
+        public Task<DbRawSqlQuery<Facility>> GetResultQuery()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    return _context.Database.SqlQuery<Facility>("SELECT * FROM Facilities");
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
+                }
+            });
+        }
+
+
+        public Task<List<Facility>> GetList()
         {
             return Task.Run(() =>
             {
@@ -103,6 +120,9 @@ namespace DbManager.Core.Services.DbService
         public Task<List<Facility>> GetByTreaty(string pattern) =>
             Task.Run(() => _context.Facilitys.Where(f => f.Treaty.Contains(pattern)).ToList());
 
+        public Task<Facility> GetByArchiveNumber(int archiveNumber) =>
+            Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.ArchiveNumber == archiveNumber));
+
         public Task Remove(int id)
         {
             return Task.Run(() =>
@@ -120,25 +140,25 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
-        public Task SaveOrUpdate(Facility facility)
+        public Task SaveOrUpdate(Facility update)
         {
-            if (facility == null)
+            if (update == null)
             {
-                throw new ArgumentNullException(nameof(facility));
+                throw new ArgumentNullException(nameof(update));
             }
 
-            return Task.Run(() =>
+            return Task.Run(async() =>
             {
                 try
                 {
-                    var update = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
-                    if (update == null)
+                    var facility = _context.Facilitys.SingleOrDefault(f => f.Id == update.Id);
+                    if (facility == null)
                     {
-                        Add(facility);
+                        await Add(update);
                     }
                     else
                     {
-                        Change(update);
+                        await Change(update);
                     }
                 }
                 catch (Exception ex)
