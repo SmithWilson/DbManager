@@ -13,8 +13,32 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         WindowStyle="SingleBorderWindow"
-        Title="Приложени"
+        Title="Приложение"
         Name="RootElement">
+    
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BorderBrush"
+                    Value="#BBB" />
+            <Setter Property="FontSize"
+                    Value="15" />
+            <Setter Property="Background"
+                    Value="#DDD" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize"
+                    Value="15" />
+            <Setter Property="Padding"
+                    Value="3" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="15" />
+            <Setter Property="Padding"
+                    Value="0" />
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.Resources>
             <converters:SearchVisibilityConverter x:Key="SearchVisibilityConverter" />
@@ -26,17 +50,18 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <Grid Background="White"
-                  HorizontalAlignment="Right"
+        <StackPanel Orientation="Horizontal"
+                    Background="#EEE">
+            <Grid HorizontalAlignment="Right"
+                  Background="White"
                   VerticalAlignment="Top"
                   Margin="5 10 0 0">
-                <TextBlock Margin="15 5 0 5"
-                           Width="140"
+                <TextBlock Padding="5"
+                           Width="240"
                            Text="Поиск..."
                            VerticalAlignment="Center"
                            Foreground="Gray"
@@ -45,16 +70,16 @@
                 <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
                          Background="Transparent"
                          Padding="5"
-                         Width="140"
+                         Width="240"
                          VerticalAlignment="Center" />
             </Grid>
             <Button Command="{Binding AddNewFacilityCommnd}"
                     ToolTip="Добавить"
-                    Width="30"
                     Height="30"
-                    Margin="10">
+                    Width="30"
+                    Margin="12 0 0 0">
                 <fa:FontAwesome Icon="Plus"
-                                FontSize="20" />
+                                FontSize="18"/>
             </Button>
         </StackPanel>
 
@@ -108,6 +133,8 @@
 
         <ListView x:Name="BigBoss"
                   Grid.Row="1"
+                  Background="#EEE"
+                  BorderBrush="#EEE"
                   ItemsSource="{Binding Facilitys}"
                   SelectedItem="{Binding ItemFacility}">
             <ListView.ItemTemplate>
