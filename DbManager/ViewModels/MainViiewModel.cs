@@ -75,7 +75,7 @@ namespace DbManager.ViewModels
                 if (String.IsNullOrWhiteSpace(Search))
                 {
                     SearchVisibility = true;
-                    Facilitys = new ObservableCollection<Facility>(await _facilityService.Get());
+                    Facilitys = new ObservableCollection<Facility>(await _facilityService.GetResultQuery());
                     return;
                 }
             SearchVisibility = false;
@@ -114,7 +114,7 @@ namespace DbManager.ViewModels
         #region Non-public Methods
         private async void Initialization()
         {
-            //for (int i = 0; i < 98; i++)
+            //for (int i = 0; i < 100; i++)
             //{
             //    await _facilityService.Add(new Facility
             //    {
@@ -129,7 +129,8 @@ namespace DbManager.ViewModels
             //        Treaty = $"{i} treaty"
             //    });
             //}
-            foreach (var item in await _facilityService.Get())
+            Facilitys.Clear();
+            foreach (var item in await _facilityService.GetResultQuery())
             {
                 Facilitys.Add(item);
             }
@@ -158,6 +159,11 @@ namespace DbManager.ViewModels
         {
             try
             {
+                if (ItemFacility == null)
+                {
+                    return;
+                }
+
                 await _facilityService.SaveOrUpdate(ItemFacility);
             }
             catch (Exception ex)
@@ -207,6 +213,7 @@ namespace DbManager.ViewModels
             {
                 var path = await _fileDialogService.OpenDialog();
                 await _docxFileService.PutDocxFileToDatabase(ItemFacility.Id, path);
+                Initialization();
             }
             catch (System.Exception)
             {
@@ -238,6 +245,7 @@ namespace DbManager.ViewModels
             try
             {
                 await _migrationService.Import(await _fileDialogService.OpenDialog());
+                await _migrationService.ImportFiles(await _fileDialogService.OpenDialogGetFiles());
                 Initialization();
             }
             catch (Exception)
@@ -251,8 +259,8 @@ namespace DbManager.ViewModels
         {
             try
             {
-                var facilitys = await _facilityService.Get();
-                await _migrationService.Export(facilitys.ToDataTable());
+                var facilitys = await _facilityService.GetList();
+                await _migrationService.Export(facilitys.ToDataTable(), facilitys.ToFileInfo());
             }
             catch (Exception)
             {

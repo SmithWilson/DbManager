@@ -41,26 +41,29 @@ namespace DbManager.Core.Services.SerializationService
             });
         }
 
-        public async Task Serialization<T>(string path, T obj)
+        public Task Serialization<T>(string path, T obj)
         {
-            try
+            return Task.Run(() =>
             {
-                if (obj == null)
+                try
                 {
-                    throw new ArgumentNullException(nameof(obj));
-                }
+                    if (obj == null)
+                    {
+                        throw new ArgumentNullException(nameof(obj));
+                    }
 
-                using (var fs = new FileStream(path , FileMode.OpenOrCreate))
-                {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(fs, obj);
+                    using (var fs = new FileStream(path, FileMode.OpenOrCreate))
+                    {
+                        var formatter = new BinaryFormatter();
+                        formatter.Serialize(fs, obj);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debugger.Break();
-                return;
-            }
+                catch (Exception ex)
+                {
+                    Debugger.Break();
+                    return;
+                }
+            });
         }
     }
 }
