@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DbManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -38,6 +39,30 @@ namespace DbManager.Core.Services.Extension
             }
 
             return dataTable;
+        }
+
+        /// <summary>
+        /// Подготовка электронных документов для экспорта.
+        /// </summary>
+        /// <param name="collection">Исходные данные.</param>
+        /// <returns>Файлы.</returns>
+        public static List<FileInfo> ToFileInfo(this List<Facility> collection)
+        {
+            var exportFiles = new List<FileInfo>();
+            foreach (var item in collection)
+            {
+                if (item.ElectronicVersion != null)
+                {
+                    exportFiles.Add(new FileInfo
+                    {
+                        ArchiveNumber = item.ArchiveNumber,
+                        FileName = item.NameElectronicVersion,
+                        File = item.ElectronicVersion
+                    });
+                }
+            }
+
+            return exportFiles;
         }
     }
 }
