@@ -16,12 +16,19 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="path">Путь.</param>
         /// <returns></returns>
         Task Import(string path);
-        
+
+        /// <summary>
+        /// Импорт документов.
+        /// </summary>
+        /// <param name="path">Путь.</param>
+        /// <returns></returns>
+        Task ImportFiles(List<string> paths);
+
         /// <summary>
         /// Экспорт данных из базы данных.
         /// </summary>
         /// <param name="dataTable">Таблица.</param>
         /// <returns></returns>
-        Task Export(DataTable dataTable);
+        Task Export(DataTable dataTable, List<Models.FileInfo> files);
     }
 }
