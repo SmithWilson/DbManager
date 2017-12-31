@@ -54,6 +54,8 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
+        <!-- ПОИСК -->
+        
         <StackPanel Orientation="Horizontal"
                     Background="#EEE">
             <Grid HorizontalAlignment="Right"
@@ -83,6 +85,11 @@
             </Button>
         </StackPanel>
 
+        <!-- КОНЕЦ ПОИСКА -->
+
+        
+        <!-- КНОПКИ УПРАВЛЕНИЯ -->
+        
         <StackPanel Orientation="Horizontal"
                     Grid.Column="1"
                     Margin="5 0 0 0">
@@ -129,18 +136,25 @@
                 <fa:FontAwesome Icon="TrashOutline"
                                 FontSize="20" />
             </Button>
+
+            <Button Command="{Binding PrintCommand}" 
+                    Content="Print"/>
         </StackPanel>
+
+        <!-- КОНЕЦ КНОПКИ УПРАВЛЕНИЯ -->
 
         <ListView x:Name="BigBoss"
                   Grid.Row="1"
                   Background="#EEE"
                   BorderBrush="#EEE"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ItemsSource="{Binding Facilitys}"
                   SelectedItem="{Binding ItemFacility}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Name}"
+                                   TextWrapping="Wrap"
                                    Margin="5" />
                         <TextBlock Text="{Binding Treaty}"
                                    Margin="5" />
@@ -158,12 +172,16 @@
                         <TextBox Text="{Binding ArchiveNumber}"
                                  Margin="5" />
                         <TextBox Text="{Binding Name}"
+                                 TextWrapping="Wrap"
                                  Margin="5" />
                         <TextBox Text="{Binding Client}"
+                                 TextWrapping="Wrap"
                                  Margin="5" />
                         <TextBox Text="{Binding Treaty}"
+                                 TextWrapping="Wrap"
                                  Margin="5" />
                         <TextBox Text="{Binding Series}"
+                                 TextWrapping="Wrap"
                                  Margin="5" />
                         <TextBox Text="{Binding Conclusion}"
                                  Margin="5" />

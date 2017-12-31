@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DbManager.Core.Services.Printing;
 
 namespace DbManager.ViewModels
 {
@@ -27,6 +28,7 @@ namespace DbManager.ViewModels
         private ICommand _remove;
         private ICommand _export;
         private ICommand _import;
+        private ICommand _print;
 
         private IFacilityService _facilityService;
         private IRootPasswordService _rootPasswordService;
@@ -108,6 +110,9 @@ namespace DbManager.ViewModels
 
         public ICommand ExportCommand => _export ??
             (_export = new DelegateCommand(async () => await ExportMethod()));
+
+        public ICommand PrintCommand => _print ??
+            (_print = new DelegateCommand(async () => await Print()));
         #endregion
 
 
@@ -240,7 +245,7 @@ namespace DbManager.ViewModels
             }
         }
 
-        public async Task ImportMethod()
+        private async Task ImportMethod()
         {
             try
             {
@@ -255,12 +260,27 @@ namespace DbManager.ViewModels
             }
         }
 
-        public async Task ExportMethod()
+        private async Task ExportMethod()
         {
             try
             {
                 var facilitys = await _facilityService.GetList();
                 await _migrationService.Export(facilitys.ToDataTable(), facilitys.ToFileInfo());
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private async Task Print()
+        {
+            try
+            {
+                PrintData print = new PrintData();
+                var facilitys = await _facilityService.GetList();
+                print.Print(facilitys.ToDataTable());
             }
             catch (Exception)
             {

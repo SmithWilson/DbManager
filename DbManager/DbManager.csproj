@@ -50,6 +50,7 @@
       <HintPath>..\packages\PropertyChanged.Fody.2.1.4\lib\netstandard1.0\PropertyChanged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="Spire.Common, Version=1.2.761.6040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>..\packages\Spire.XLS.7.12.125\lib\net40\Spire.Common.dll</HintPath>
     </Reference>
@@ -106,6 +107,8 @@
     <Compile Include="Core\Services\DbService\RecordNotFoundException.cs" />
     <Compile Include="Core\Services\DbService\RootPasswordService.cs" />
     <Compile Include="Core\Services\FileServices\FileDialogService.cs" />
+    <Compile Include="Core\Services\Printing\PrintData.cs" />
+    <Compile Include="Core\Services\Printing\StoreDataSetPaginator.cs" />
     <Compile Include="Core\Services\SerializationService\BinarySerializationService.cs" />
     <Compile Include="Models\FileInfo.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />

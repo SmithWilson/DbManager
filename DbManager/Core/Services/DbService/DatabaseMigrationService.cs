@@ -94,6 +94,16 @@ namespace DbManager.Core.Services.DbService
                 {
                     DataRow data = dataTable.Rows[i];
 
+                    DateTime date;
+                    if (string.IsNullOrWhiteSpace(data["Date"].ToString()))
+                    {
+                        date = DateTime.Parse("01.01.1970");
+                    }
+                    else
+                    {
+                        date = DateTime.Parse(data["Date"].ToString());
+                    }
+
                     var facility = new Facility
                     {
                         ArchiveNumber = Convert.ToInt32(data["ArchiveNumber"]),
@@ -105,7 +115,8 @@ namespace DbManager.Core.Services.DbService
                         PlaceInArchive = data["PlaceInArchive"].ToString(),
                         Treaty = data["Treaty"].ToString(),
                         IsElectronicVersion = Convert.ToBoolean(data["IsElectronicVersion"]),
-                        NameElectronicVersion = data["NameElectronicVersion"].ToString()
+                        NameElectronicVersion = data["NameElectronicVersion"].ToString(),
+                        Date = date
                     };
 
                     await _facilityService.Add(facility);
@@ -144,7 +155,7 @@ namespace DbManager.Core.Services.DbService
                 catch (Exception)
                 {
                     Debugger.Break();
-                    throw;
+                    return;
                 }
             });
         }
