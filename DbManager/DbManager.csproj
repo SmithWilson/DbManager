@@ -66,6 +66,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -99,7 +100,7 @@
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFileDialogService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\ManagerContext.cs" />
-    <Compile Include="Core\Services\Converters\SearchVisibilityConverter.cs" />
+    <Compile Include="Core\Services\Converters\VisibilityConverter.cs" />
     <Compile Include="Core\Services\DbService\DatabaseMigrationService.cs" />
     <Compile Include="Core\Services\Extension\MigrationHelper.cs" />
     <Compile Include="Core\Services\FileServices\DocxFileService.cs" />
