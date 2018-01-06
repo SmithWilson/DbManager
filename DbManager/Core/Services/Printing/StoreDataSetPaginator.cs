@@ -46,9 +46,9 @@ namespace DbManager.Core.Services.Printing
 
         public void PaginateData()
         {
-            FormattedText text = GetFormattedText("A");
+            //FormattedText text = GetFormattedText("A\nA");
 
-            _rowsPerPage = (int)((_size.Height - _margin * 2) / text.Height);
+            _rowsPerPage = (int)((_size.Height - _margin * 2) / 40);
 
             _rowsPerPage -= 1;
 
@@ -96,9 +96,9 @@ namespace DbManager.Core.Services.Printing
             FormattedText text = GetFormattedText("A");
 
             double col1_X = _margin;
-            double col2_X = col1_X + text.Width * 15;
-            double col3_X = col1_X + text.Width * 90;
-            double col4_X = col1_X + text.Width * 120;
+            double col2_X = col1_X + text.Width * 20;
+            double col3_X = col1_X + text.Width * 100;
+            double col4_X = col1_X + text.Width * 130;
 
             int minRow = pageNumber * _rowsPerPage;
             int maxRow = minRow + _rowsPerPage;
@@ -109,21 +109,20 @@ namespace DbManager.Core.Services.Printing
             // Установить позицию в верхний левый угол печатаемой области
             Point point = new Point(_margin, _margin);
 
-            TextFormatFlags
             using (DrawingContext dc = visual.RenderOpen())
             {
                 // Нарисовать заголовки столбцов
                 Typeface columnHeaderTypeface = new Typeface(_typeFace.FontFamily, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
                 point.X = col1_X;
-                text = GetFormattedText("ArchiveNumber", columnHeaderTypeface);
+                text = GetFormattedText("Архивный Номер", columnHeaderTypeface);
                 dc.DrawText(text, point);
-                text = GetFormattedText("Name", columnHeaderTypeface);
+                text = GetFormattedText("Название", columnHeaderTypeface);
                 point.X = col2_X;
                 dc.DrawText(text, point);
-                text = GetFormattedText("Client", columnHeaderTypeface);
+                text = GetFormattedText("Заказчик", columnHeaderTypeface);
                 point.X = col3_X;
                 dc.DrawText(text, point);
-                text = GetFormattedText("Treaty", columnHeaderTypeface);
+                text = GetFormattedText("Договор", columnHeaderTypeface);
                 point.X = col4_X;
                 dc.DrawText(text, point);
 
@@ -132,7 +131,7 @@ namespace DbManager.Core.Services.Printing
                     new Point(_margin, _margin + text.Height),
                     new Point(_size.Width - _margin, _margin + text.Height));
 
-                point.Y += text.Height;
+                point.Y += 40;
 
                 // Нарисовать значения столбцов
                 for (int i = minRow; i < maxRow; i++)
@@ -147,19 +146,23 @@ namespace DbManager.Core.Services.Printing
                     
                     // Добавить второй столбец
                     text = GetFormattedText(_table.Rows[i]["Name"].ToString());
-                    
+                    text.MaxTextHeight = 40;
+                    text.MaxTextWidth = 520;
                     point.X = col2_X;
                     dc.DrawText(text, point);
 
+                    text = GetFormattedText(_table.Rows[i]["Treaty"].ToString());
+                    text.MaxTextWidth = 200;
+                    point.X = col4_X;
+                    dc.DrawText(text, point);
+
                     text = GetFormattedText(_table.Rows[i]["Client"].ToString());
+                    text.MaxTextWidth = 200;
                     point.X = col3_X;
                     dc.DrawText(text, point);
 
-
-                    text = GetFormattedText(_table.Rows[i]["Treaty"].ToString());
-                    point.X = col4_X;
-                    dc.DrawText(text, point);
-                    point.Y += text.Height;
+                    text = GetFormattedText("A\nA");
+                    point.Y += 40;
                 }
             }
             return new DocumentPage(visual, _size, new Rect(_size), new Rect(_size));
