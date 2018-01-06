@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DbManager.Core.Services.Printing;
+using System.Windows;
 
 namespace DbManager.ViewModels
 {
@@ -22,13 +23,28 @@ namespace DbManager.ViewModels
         #region Fields
         private ICommand _pushFileToDatabase;
         private ICommand _getFileFromDatabase;
+
         private ICommand _addNewFacility;
         private ICommand _saveOrChange;
         private ICommand _annulment;
         private ICommand _remove;
+
         private ICommand _export;
         private ICommand _import;
+
         private ICommand _print;
+        private ICommand _printByDate;
+
+        private ICommand _loginAdmin;
+        private ICommand _logGuest;
+        private ICommand _changePassword;
+
+        private ICommand _openLoginPopUp;
+        private ICommand _openChangePopUp;
+        private ICommand _openExitPopUp;
+        private ICommand _openRemovePopUp;
+        private ICommand _printPopUp;
+        private ICommand _cancelPopUp;
 
         private IFacilityService _facilityService;
         private IRootPasswordService _rootPasswordService;
@@ -59,6 +75,10 @@ namespace DbManager.ViewModels
 
 
         #region Properties
+        public bool Root { get; set; }
+
+        public bool LoginButton { get; set; } = true;
+
         public ObservableCollection<Facility> Facilitys { get; set; }
 
         public Facility ItemFacility { get; set; }
@@ -66,6 +86,24 @@ namespace DbManager.ViewModels
         public string Search { get; set; }
 
         public bool SearchVisibility { get; set; } = true;
+
+        public int Year { get; set; }
+
+        public string Password { get; set; }
+
+        public bool LoginPopup { get; set; }
+
+        public bool ChangePasswordPopup { get; set; }
+
+        public string OldPassword { get; set; }
+
+        public string NewPassword { get; set; }
+
+        public bool RemovePopup { get; set; }
+
+        public bool ExitPopup { get; set; }
+
+        public bool PrintPopUp { get; set; }
         #endregion
 
 
@@ -74,14 +112,22 @@ namespace DbManager.ViewModels
 
         public async void OnSearchChanged()
         {
+            try
+            {
                 if (String.IsNullOrWhiteSpace(Search))
                 {
                     SearchVisibility = true;
                     Facilitys = new ObservableCollection<Facility>(await _facilityService.GetResultQuery());
                     return;
                 }
-            SearchVisibility = false;
-            Facilitys = new ObservableCollection<Facility>(await _facilityService.GetByTreaty(Search));
+                SearchVisibility = false;
+                Facilitys = new ObservableCollection<Facility>(await _facilityService.GetByTreaty(Search));
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
         }
         #endregion
 
@@ -94,13 +140,13 @@ namespace DbManager.ViewModels
             (_getFileFromDatabase = new DelegateCommand(async () => await GetFile()));
 
         public ICommand AddNewFacilityCommnd => _addNewFacility ??
-            (_addNewFacility = new DelegateCommand(() => AddNewFacility()));
+            (_addNewFacility = new DelegateCommand(AddNewFacility));
 
         public ICommand SaveOrChangeCommand => _saveOrChange ??
             (_saveOrChange = new DelegateCommand(async() => await SaveOrChange()));
 
         public ICommand AnnulmentCommand => _annulment ??
-            (_annulment = new DelegateCommand(() => Annulment()));
+            (_annulment = new DelegateCommand(Annulment));
 
         public ICommand RemoveCommand => _remove ??
             (_remove = new DelegateCommand(async() => await Remove()));
@@ -113,6 +159,36 @@ namespace DbManager.ViewModels
 
         public ICommand PrintCommand => _print ??
             (_print = new DelegateCommand(async () => await Print()));
+
+        public ICommand PrintByDateCommand => _printByDate ??
+            (_printByDate = new DelegateCommand(async () => await PrintByDate()));
+
+        public ICommand PopupCancelCommand => _cancelPopUp ??
+            (_cancelPopUp = new DelegateCommand(PopupCancel));
+
+        public ICommand LoginCommand => _loginAdmin ??
+            (_loginAdmin = new DelegateCommand(async () => await Login()));
+
+        public ICommand ChangePasswordCommand => _changePassword ??
+            (_changePassword = new DelegateCommand(async () => await ChangePassword()));
+
+        public ICommand LogGuestCommand => _logGuest ??
+            (_logGuest = new DelegateCommand(LoginGuest));
+
+        public ICommand OpenLoginPopUp => _openLoginPopUp ??
+            (_openLoginPopUp = new DelegateCommand(() => LoginPopup = true));
+
+        public ICommand OpenChangePasswordPopUp => _openChangePopUp ??
+            (_openChangePopUp = new DelegateCommand(() => ChangePasswordPopup = true));
+
+        public ICommand OpenExitPopUp => _openExitPopUp ??
+            (_openExitPopUp = new DelegateCommand(() => ExitPopup = true));
+
+        public ICommand OpenRemovePopUp => _openRemovePopUp ??
+            (_openRemovePopUp = new DelegateCommand(() => RemovePopup = true));
+        
+        public ICommand OpenPrintPopUp => _printPopUp ??
+            (_printPopUp = new DelegateCommand(() => PrintPopUp = true));
         #endregion
 
 
@@ -199,6 +275,7 @@ namespace DbManager.ViewModels
             {
                 await _facilityService.Remove(ItemFacility.Id);
                 Facilitys.Remove(ItemFacility);
+                PopupCancel();
             }
             catch (Exception ex)
             {
@@ -281,6 +358,102 @@ namespace DbManager.ViewModels
                 PrintData print = new PrintData();
                 var facilitys = await _facilityService.GetList();
                 print.Print(facilitys.ToDataTable());
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private async Task PrintByDate()
+        {
+            try
+            {
+                PopupCancel();
+                PrintData print = new PrintData();
+                var facilitys = await _facilityService.GetList();
+                print.Print(facilitys.Where(f => f.Date.Value.Year == Year).ToList().ToDataTable());
+                Year = 0;
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private void PopupCancel()
+        {
+            LoginPopup = false;
+            ChangePasswordPopup = false;
+            RemovePopup = false;
+            ExitPopup = false;
+            PrintPopUp = false;
+            OldPassword = string.Empty;
+            NewPassword = string.Empty;
+            Password = string.Empty;
+        }
+
+        private async Task Login()
+        {
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                return;
+            }
+
+            try
+            {
+                var right = await _rootPasswordService.Rigth(Password);
+                if (!right)
+                {
+                    Password = "Не верный пароль.";
+                }
+                else
+                {
+                    LoginPopup = false;
+                    LoginButton = false;
+                    Root = true;
+                    Password = string.Empty;
+                }
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private async Task ChangePassword()
+        {
+            try
+            {
+                var result = await _rootPasswordService.Change(OldPassword, NewPassword);
+                if (!result)
+                {
+                    OldPassword = "Не верный пароль.";
+                }
+                else
+                {
+                    ChangePasswordPopup = false;
+                    OldPassword = string.Empty;
+                    NewPassword = string.Empty;
+                }
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                return;
+            }
+        }
+
+        private void LoginGuest()
+        {
+            try
+            {
+                LoginButton = true;
+                Root = false;
+                ExitPopup = false;
             }
             catch (Exception)
             {

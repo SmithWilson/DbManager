@@ -11,7 +11,7 @@ namespace DbManager.Core.Services.Converters
     /// <summary>
     /// Преобразует значение(value) в параметр состояние видимости.
     /// </summary>
-    public class SearchVisibilityConverter : IValueConverter
+    public class VisibilityConverter : IValueConverter
     {
         #region IValueConverter Implementation
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
