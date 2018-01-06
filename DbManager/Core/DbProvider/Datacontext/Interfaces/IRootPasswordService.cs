@@ -17,7 +17,7 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="before">Старый пароль.</param>
         /// <param name="after">Новый пароль.</param>
         /// <returns></returns>
-        Task Change(string before, string after);
+        Task<bool> Change(string before, string after);
 
         /// <summary>
         /// Проверка пароля.
