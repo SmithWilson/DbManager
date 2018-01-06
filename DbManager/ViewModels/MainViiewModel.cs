@@ -49,7 +49,7 @@ namespace DbManager.ViewModels
         private IFacilityService _facilityService;
         private IRootPasswordService _rootPasswordService;
         private IFileDialogService _fileDialogService;
-        private IDocxFileService _docxFileService;
+        private IDocFileService _docxFileService;
         private IDatabaseMigrationService _migrationService;
 
         private ManagerContext _context;
@@ -62,7 +62,7 @@ namespace DbManager.ViewModels
             _facilityService = new FacilityService();
             _rootPasswordService = new RootPasswordService();
             _fileDialogService = new FileDialogService();
-            _docxFileService = new DocxFileService();
+            _docxFileService = new DocFileService();
             _migrationService = new DatabaseMigrationService();
 
             _context = ManagerContext.Instance;
@@ -75,41 +75,81 @@ namespace DbManager.ViewModels
 
 
         #region Properties
+        /// <summary>
+        /// Статус пользователя гость/админ.
+        /// </summary>
         public bool Root { get; set; }
 
-        public bool LoginButton { get; set; } = true;
-
+        /// <summary>
+        /// Главная коллекция элементов.
+        /// </summary>
         public ObservableCollection<Facility> Facilitys { get; set; }
 
+        /// <summary>
+        /// Выбранный элемент коллекции.
+        /// </summary>
         public Facility ItemFacility { get; set; }
 
+        /// <summary>
+        /// Поиск.
+        /// </summary>
         public string Search { get; set; }
 
+        /// <summary>
+        /// Отображение подсказки.
+        /// </summary>
         public bool SearchVisibility { get; set; } = true;
 
+
+        /// <summary>
+        /// Год для печати.
+        /// </summary>
         public int Year { get; set; }
 
+        /// <summary>
+        /// Пароль для входа.
+        /// </summary>
         public string Password { get; set; }
 
+        /// <summary>
+        /// Смена пароля. Старый пароль.
+        /// </summary>
+        public string OldPassword { get; set; }
+
+        /// <summary>
+        /// Смена пароля. Новый пароль.
+        /// </summary>
+        public string NewPassword { get; set; }
+
+        /// <summary>
+        /// Кнопка для входа как администратор.
+        /// </summary>
+        public bool LoginWithPassword { get; set; } = true;
+
+        /// <summary>
+        /// Состояния отображения всплывающих окон true/false.
+        /// </summary>
         public bool LoginPopup { get; set; }
 
         public bool ChangePasswordPopup { get; set; }
 
-        public string OldPassword { get; set; }
-
-        public string NewPassword { get; set; }
-
         public bool RemovePopup { get; set; }
 
-        public bool ExitPopup { get; set; }
-
         public bool PrintPopUp { get; set; }
+
+        public bool ExitPopup { get; set; }
+        /// <summary>
+        /// END Состояния отображения всплывающих окон true/false.
+        /// </summary>
         #endregion
 
 
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Поиск по номеру договора.
+        /// </summary>
         public async void OnSearchChanged()
         {
             try
@@ -162,9 +202,7 @@ namespace DbManager.ViewModels
 
         public ICommand PrintByDateCommand => _printByDate ??
             (_printByDate = new DelegateCommand(async () => await PrintByDate()));
-
-        public ICommand PopupCancelCommand => _cancelPopUp ??
-            (_cancelPopUp = new DelegateCommand(PopupCancel));
+        
 
         public ICommand LoginCommand => _loginAdmin ??
             (_loginAdmin = new DelegateCommand(async () => await Login()));
@@ -174,6 +212,7 @@ namespace DbManager.ViewModels
 
         public ICommand LogGuestCommand => _logGuest ??
             (_logGuest = new DelegateCommand(LoginGuest));
+
 
         public ICommand OpenLoginPopUp => _openLoginPopUp ??
             (_openLoginPopUp = new DelegateCommand(() => LoginPopup = true));
@@ -189,38 +228,28 @@ namespace DbManager.ViewModels
         
         public ICommand OpenPrintPopUp => _printPopUp ??
             (_printPopUp = new DelegateCommand(() => PrintPopUp = true));
+
+        public ICommand PopupCancelCommand => _cancelPopUp ??
+            (_cancelPopUp = new DelegateCommand(PopupCancel));
         #endregion
 
 
         #region Non-public Methods
+        /// <summary>
+        /// Обновление коллекции.
+        /// </summary>
         private async void Initialization()
         {
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    await _facilityService.Add(new Facility
-            //    {
-            //        ArchiveNumber = i * 2,
-            //        Series = $"{i} series",
-            //        Client = $"{i} client",
-            //        Conclusion = $"{i} conclusion",
-            //        Date = DateTime.Now,
-            //        Executor = $"{i} executor",
-            //        Name = $"{i} name",
-            //        PlaceInArchive = $"{i} полка {i * 3} ряд",
-            //        Treaty = $"{i} treaty"
-            //    });
-            //}
             Facilitys.Clear();
             foreach (var item in await _facilityService.GetResultQuery())
             {
                 Facilitys.Add(item);
             }
-
-            //await _rootPasswordService.Change("password", "heh");
-
-            //await _rootPasswordService.Reset("heh");
         }
 
+        /// <summary>
+        /// Добавление нового обьекта.
+        /// </summary>
         private void AddNewFacility()
         {
             try
@@ -236,6 +265,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Сохранение или изменение обьекта.
+        /// </summary>
+        /// <returns></returns>
         private async Task SaveOrChange()
         {
             try
@@ -254,6 +287,9 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Отмена.
+        /// </summary>
         private void Annulment()
         {
             try
@@ -269,6 +305,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Удаление обьекта.
+        /// </summary>
+        /// <returns></returns>
         private async Task Remove()
         {
             try
@@ -284,6 +324,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Добавление электронного документа к обьекту.
+        /// </summary>
+        /// <returns></returns>
         private async Task PushFile()
         {
             if (ItemFacility == null)
@@ -294,7 +338,7 @@ namespace DbManager.ViewModels
             try
             {
                 var path = await _fileDialogService.OpenDialog();
-                await _docxFileService.PutDocxFileToDatabase(ItemFacility.Id, path);
+                await _docxFileService.PutDocFileToDatabase(ItemFacility.Id, path);
                 Initialization();
             }
             catch (System.Exception)
@@ -304,6 +348,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Сохранение электронного документа на рабочий стол.
+        /// </summary>
+        /// <returns></returns>
         private async Task GetFile()
         {
             if (ItemFacility == null || ItemFacility.ElectronicVersion == null)
@@ -313,7 +361,7 @@ namespace DbManager.ViewModels
 
             try
             {
-                await _docxFileService.GetDoxcFileFromDatabase(ItemFacility.Id, ItemFacility.NameElectronicVersion);
+                await _docxFileService.GetDoсFileFromDatabase(ItemFacility.Id, ItemFacility.NameElectronicVersion);
             }
             catch (System.Exception)
             {
@@ -322,6 +370,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Импорт бд и электронных документов.
+        /// </summary>
+        /// <returns></returns>
         private async Task ImportMethod()
         {
             try
@@ -337,6 +389,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Экспорт бд и электронных документов в Мои Документы Export_Дата_Часы_Hour.
+        /// </summary>
+        /// <returns></returns>
         private async Task ExportMethod()
         {
             try
@@ -351,6 +407,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Печать.
+        /// </summary>
+        /// <returns></returns>
         private async Task Print()
         {
             try
@@ -366,6 +426,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Печать по дате.
+        /// </summary>
+        /// <returns></returns>
         private async Task PrintByDate()
         {
             try
@@ -383,6 +447,9 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Закрытие всех всплывающих окон и сброс переменных.
+        /// </summary>
         private void PopupCancel()
         {
             LoginPopup = false;
@@ -395,6 +462,10 @@ namespace DbManager.ViewModels
             Password = string.Empty;
         }
 
+        /// <summary>
+        /// Вход как администратор.
+        /// </summary>
+        /// <returns></returns>
         private async Task Login()
         {
             if (string.IsNullOrWhiteSpace(Password))
@@ -412,7 +483,7 @@ namespace DbManager.ViewModels
                 else
                 {
                     LoginPopup = false;
-                    LoginButton = false;
+                    LoginWithPassword = false;
                     Root = true;
                     Password = string.Empty;
                 }
@@ -424,6 +495,10 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Смена пароля.
+        /// </summary>
+        /// <returns></returns>
         private async Task ChangePassword()
         {
             try
@@ -447,11 +522,14 @@ namespace DbManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Выход.
+        /// </summary>
         private void LoginGuest()
         {
             try
             {
-                LoginButton = true;
+                LoginWithPassword = true;
                 Root = false;
                 ExitPopup = false;
             }

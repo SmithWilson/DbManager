@@ -14,6 +14,10 @@ namespace DbManager.Core.Services.Printing
 {
     class PrintData
     {
+        /// <summary>
+        /// Печать.
+        /// </summary>
+        /// <param name="facilitys"></param>
         public void Print(DataTable facilitys)
         {
             PrintDialog printDialog = new PrintDialog();

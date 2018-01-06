@@ -2,7 +2,7 @@
 
 namespace DbManager.Core.DbProvider.Datacontext.Interfaces
 {
-    public interface IDocxFileService
+    public interface IDocFileService
     {
         /// <summary>
         /// Добавление файла в бд.
@@ -10,7 +10,7 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="id">Id.</param>
         /// <param name="path">Путь.</param>
         /// <returns></returns>
-        Task PutDocxFileToDatabase(int id, string path);
+        Task PutDocFileToDatabase(int id, string path);
 
         /// <summary>
         /// Пролучение файла из бд.
@@ -18,6 +18,6 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// <param name="id">Id.</param>
         /// <param name="fileName">Имя файла.</param>
         /// <returns></returns>
-        Task GetDoxcFileFromDatabase(int id, string fileName);
+        Task GetDoсFileFromDatabase(int id, string fileName);
     }
 }

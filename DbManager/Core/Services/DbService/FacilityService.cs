@@ -18,6 +18,11 @@ namespace DbManager.Core.Services.DbService
 
 
         #region Methods
+        /// <summary>
+        /// Добавление нового обьекта в бд.
+        /// </summary>
+        /// <param name="facility">Новый обьект.</param>
+        /// <returns></returns>
         public Task Add(Facility facility)
         {
             if (facility == null)
@@ -39,6 +44,11 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Обновление обьекта в бд.
+        /// </summary>
+        /// <param name="facility">Обькт.</param>
+        /// <returns></returns>
         public Task Change(Facility facility)
         {
             if (facility == null)
@@ -68,6 +78,10 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Получение данных с помощью SQL-запроса из бд.
+        /// </summary>
+        /// <returns></returns>
         public Task<DbRawSqlQuery<Facility>> GetResultQuery()
         {
             return Task.Run(() =>
@@ -83,7 +97,10 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
-
+        /// <summary>
+        /// Получегте списка обьектов из бд.
+        /// </summary>
+        /// <returns></returns>
         public Task<List<Facility>> GetList()
         {
             return Task.Run(() =>
@@ -99,6 +116,12 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Получение обьектов из бд.
+        /// </summary>
+        /// <param name="count">Количество.</param>
+        /// <param name="offset">Смещение.</param>
+        /// <returns></returns>
         public Task<IEnumerable<Facility>> Get(int count, int offset)
         {
             return Task.Run(() =>
@@ -114,15 +137,35 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Получение обьекта по Id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns></returns>
         public Task<Facility> GetById(int id) =>
             Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.Id == id));
 
+        /// <summary>
+        /// Получение обьекта по договору.
+        /// </summary>
+        /// <param name="pattern">Договор.</param>
+        /// <returns></returns>
         public Task<List<Facility>> GetByTreaty(string pattern) =>
             Task.Run(() => _context.Facilitys.Where(f => f.Treaty.Contains(pattern)).ToList());
 
+        /// <summary>
+        /// Получение обьекта по архивному номеру.
+        /// </summary>
+        /// <param name="archiveNumber">Архивный номер.</param>
+        /// <returns></returns>
         public Task<Facility> GetByArchiveNumber(int archiveNumber) =>
             Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.ArchiveNumber == archiveNumber));
 
+        /// <summary>
+        /// Удаление обьекта из бд.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Task Remove(int id)
         {
             return Task.Run(() =>
@@ -140,6 +183,11 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Добавление или обновление данных в бд.
+        /// </summary>
+        /// <param name="update"></param>
+        /// <returns></returns>
         public Task SaveOrUpdate(Facility update)
         {
             if (update == null)
@@ -169,6 +217,10 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Сброс базы данныхю.
+        /// </summary>
+        /// <returns></returns>
         public Task Reset()
             => Task.Run(() =>
                 {

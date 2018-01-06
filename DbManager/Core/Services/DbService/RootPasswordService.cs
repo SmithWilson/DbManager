@@ -14,9 +14,19 @@ namespace DbManager.Core.Services.DbService
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Получение пароля.
+        /// </summary>
+        /// <returns></returns>
         public Task<RootPassword> Get() =>
             Task.Run(() => _context.Passwords.FirstOrDefault());
 
+        /// <summary>
+        /// Изменение пароля.
+        /// </summary>
+        /// <param name="before">Старый.</param>
+        /// <param name="after">Новый.</param>
+        /// <returns></returns>
         public Task<bool> Change(string before, string after)
         {
             return Task.Run(() =>
@@ -41,6 +51,11 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Правильность пароля.
+        /// </summary>
+        /// <param name="password">Пароль.</param>
+        /// <returns></returns>
         public Task<bool> Rigth(string password)
         {
             return Task.Run(() =>
@@ -49,6 +64,11 @@ namespace DbManager.Core.Services.DbService
             });
         }
 
+        /// <summary>
+        /// Сброс пароля.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public Task Reset(string password)
         {
             return Task.Run(() =>

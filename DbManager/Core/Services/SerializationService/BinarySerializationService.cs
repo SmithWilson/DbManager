@@ -10,9 +10,17 @@ using System.Threading.Tasks;
 
 namespace DbManager.Core.Services.SerializationService
 {
+    /// <summary>
+    /// Бинарная сериализация.
+    /// </summary>
     public class BinarySerializationService : IBinarySerializationService
     {
-        //TODO: Доделать и проверить нормальную работу.
+        /// <summary>
+        /// Десериализация.
+        /// </summary>
+        /// <typeparam name="T">Передаваемый тип.</typeparam>
+        /// <param name="path">Путь.</param>
+        /// <returns></returns>
         public Task<T> Deserialization<T>(string path)
         {
             return Task.Run(() =>
@@ -41,6 +49,13 @@ namespace DbManager.Core.Services.SerializationService
             });
         }
 
+        /// <summary>
+        /// Сериализация.
+        /// </summary>
+        /// <typeparam name="T">Передаваемый тип.</typeparam>
+        /// <param name="path">Путь.</param>
+        /// <param name="obj">Обьект.</param>
+        /// <returns></returns>
         public Task Serialization<T>(string path, T obj)
         {
             return Task.Run(() =>

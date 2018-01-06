@@ -11,6 +11,9 @@ using System.Windows.Media;
 
 namespace DbManager.Core.Services.Printing
 {
+    /// <summary>
+    /// Конфигурация печати.
+    /// </summary>
     public class StoreDataSetPaginator : DocumentPaginator
     {
         private DataTable _table;
@@ -143,8 +146,6 @@ namespace DbManager.Core.Services.Printing
                     text = GetFormattedText(_table.Rows[i]["ArchiveNumber"].ToString());
                     dc.DrawText(text, point);
 
-                    
-                    // Добавить второй столбец
                     text = GetFormattedText(_table.Rows[i]["Name"].ToString());
                     text.MaxTextHeight = 40;
                     text.MaxTextWidth = 520;

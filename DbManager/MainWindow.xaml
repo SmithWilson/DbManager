@@ -354,7 +354,7 @@
 
                 <Button Grid.Row="7"
                         Command="{Binding OpenLoginPopUp}"
-                        Visibility="{Binding LoginButton, Converter={StaticResource VisibilityConverter}}"
+                        Visibility="{Binding LoginWithPassword, Converter={StaticResource VisibilityConverter}}"
                         ToolTip="Войти">
                     <fa:FontAwesome Icon="Lock"
                                     FontSize="20"

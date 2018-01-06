@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DbManager.Core.Services.FileService
 {
-    public class DocxFileService : IDocxFileService
+    public class DocFileService : IDocFileService
     {
         #region Fields
         private ManagerContext _context;
@@ -16,7 +16,7 @@ namespace DbManager.Core.Services.FileService
 
 
         #region Ctors
-        public DocxFileService()
+        public DocFileService()
         {
             _context = ManagerContext.Instance;
         }
@@ -24,8 +24,13 @@ namespace DbManager.Core.Services.FileService
 
 
         #region Methods
-        //TODO: Ловить его на руже.
-        public Task GetDoxcFileFromDatabase(int id, string fileName)
+        /// <summary>
+        /// Получение документа из бд.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <param name="fileName">Имя файла.</param>
+        /// <returns></returns>
+        public Task GetDoсFileFromDatabase(int id, string fileName)
         {
             var file = _context.Facilitys.SingleOrDefault(f => f.Id == id)?.ElectronicVersion ?? throw new NullReferenceException();
 
@@ -46,7 +51,13 @@ namespace DbManager.Core.Services.FileService
             });
         }
 
-        public Task PutDocxFileToDatabase(int id, string path)
+        /// <summary>
+        /// Добавление файла в бд.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Task PutDocFileToDatabase(int id, string path)
         {
             var file = _context.Facilitys.SingleOrDefault(f => f.Id == id) ?? throw new FileNotFoundException();
             if (String.IsNullOrWhiteSpace(path))

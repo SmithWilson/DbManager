@@ -95,7 +95,7 @@
     </Compile>
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IBinarySerializationService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IDatabaseMigrationService.cs" />
-    <Compile Include="Core\DbProvider\Datacontext\Interfaces\IDocxFileService.cs" />
+    <Compile Include="Core\DbProvider\Datacontext\Interfaces\IDocFileService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFacilityService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IFileDialogService.cs" />
     <Compile Include="Core\DbProvider\Datacontext\Interfaces\IRootPasswordService.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="Core\Services\Converters\VisibilityConverter.cs" />
     <Compile Include="Core\Services\DbService\DatabaseMigrationService.cs" />
     <Compile Include="Core\Services\Extension\MigrationHelper.cs" />
-    <Compile Include="Core\Services\FileServices\DocxFileService.cs" />
+    <Compile Include="Core\Services\FileServices\DocFileService.cs" />
     <Compile Include="Core\Services\DbService\FacilityService.cs" />
     <Compile Include="Core\Services\DbService\RecordNotFoundException.cs" />
     <Compile Include="Core\Services\DbService\RootPasswordService.cs" />

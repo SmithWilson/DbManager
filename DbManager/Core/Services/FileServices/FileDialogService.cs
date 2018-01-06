@@ -15,6 +15,10 @@ namespace DbManager.Core.Services.FileService
         private string _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "export");
 
         #region Methods
+        /// <summary>
+        /// Открыьте OpenDialog для одиночной выборки.
+        /// </summary>
+        /// <returns></returns>
         public Task<string> OpenDialog()
         {
             return Task.Run(() =>
@@ -34,6 +38,10 @@ namespace DbManager.Core.Services.FileService
             });
         }
 
+        /// <summary>
+        /// Открытие OpenDialog для множественного выбора файлов *.txt.
+        /// </summary>
+        /// <returns></returns>
         public Task<List<string>> OpenDialogGetFiles()
         {
             return Task.Run(() =>
