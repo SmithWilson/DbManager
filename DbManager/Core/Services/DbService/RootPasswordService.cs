@@ -3,6 +3,7 @@ using DbManager.Core.DbProvider.Datacontext.Interfaces;
 using DbManager.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace DbManager.Core.Services.DbService
 {
@@ -16,13 +17,27 @@ namespace DbManager.Core.Services.DbService
         public Task<RootPassword> Get() =>
             Task.Run(() => _context.Passwords.FirstOrDefault());
 
-        public Task Change(string before, string after)
+        public Task<bool> Change(string before, string after)
         {
             return Task.Run(() =>
             {
-                var record = _context.Passwords.SingleOrDefault(p => p.Password == before) ?? throw new RecordNotFoundException();
-                record.Password = after;
-                _context.SaveChanges();
+                try
+                {
+                    var record = _context.Passwords.SingleOrDefault(p => p.Password == before);
+                    if (record == null)
+                    {
+                        return false;
+                    }
+                    record.Password = after;
+                    _context.SaveChanges();
+
+                    return true;
+                }
+                catch (System.Exception)
+                {
+                    Debugger.Break();
+                    return false;
+                }
             });
         }
 
