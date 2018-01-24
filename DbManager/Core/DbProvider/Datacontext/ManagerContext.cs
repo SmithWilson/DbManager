@@ -5,6 +5,10 @@ namespace DbManager.Core.DbProvider.Datacontext
 {
     public class ManagerContext : DbContext
     {
+        //.\SQLEXPRESS
+        //(localdb)\MSSQLLocalDB
+
+
         /// <summary>
         /// Инстанс базы данных.
         /// </summary>
