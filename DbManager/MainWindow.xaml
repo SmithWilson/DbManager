@@ -9,7 +9,7 @@
         xmlns:converters="clr-namespace:DbManager.Core.Services.Converters"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         WindowStyle="SingleBorderWindow"
@@ -307,7 +307,7 @@
                                     Foreground="White" />
                 </Button>
 
-                <Button Grid.Row="2"
+                <Button Grid.Row="2"    
                         Command="{Binding ImportCommand}"
                         Visibility="{Binding Root, Converter={StaticResource VisibilityConverter}}"
                         ToolTip="Импорт">
@@ -621,7 +621,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel>
-                        <Label Content="Логин" />
+                        <Label Content="Вход" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="2">
@@ -633,7 +633,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Button Content="Логин"
+                            <Button Content="Войти"
                                     Margin="5"
                                     Height="30"
                                     Command="{Binding LoginCommand}"

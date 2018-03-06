@@ -48,8 +48,14 @@ namespace DbManager.Core.Services.DbService
             {
                 try
                 {
-                    //Путь новой папки, для хранения данных.
-                    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"Export_{DateTime.Now.ToShortDateString()}_{DateTime.Now.Hour.ToString()}_Hour");
+	                if (files == null)
+	                {
+		                return;
+	                }
+
+					//Путь новой папки, для хранения данных.
+					//var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"Export_{DateTime.Now.ToShortDateString()}_{DateTime.Now.Hour.ToString()}_Hour");
+					var path = Path.Combine(Directory.GetCurrentDirectory(), $"Export_{DateTime.Now.ToShortDateString()}_{DateTime.Now.Hour.ToString()}_Hour");
                     //Если директория(папка) отсутствует, то создается новая.
                     if (!Directory.Exists(path))
                     {
@@ -82,11 +88,11 @@ namespace DbManager.Core.Services.DbService
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public async Task Import(string path)
+        public async Task<bool> Import(string path)
         {
             if (String.IsNullOrWhiteSpace(path))
             {
-                return;
+                return false;
             }
 
             try
@@ -109,17 +115,6 @@ namespace DbManager.Core.Services.DbService
                 {
                     DataRow data = dataTable.Rows[i];
 
-                    DateTime date;
-                    //Если дата не указана, то задается по умолчанию 01.01.1970.
-                    if (string.IsNullOrWhiteSpace(data["Date"].ToString()))
-                    {
-                        date = DateTime.Parse("01.01.1970");
-                    }
-                    else
-                    {
-                        date = DateTime.Parse(data["Date"].ToString());
-                    }
-
                     //Считывание данных с строки.
                     var facility = new Facility
                     {
@@ -133,17 +128,28 @@ namespace DbManager.Core.Services.DbService
                         Treaty = data["Treaty"].ToString(),
                         IsElectronicVersion = Convert.ToBoolean(data["IsElectronicVersion"]),
                         NameElectronicVersion = data["NameElectronicVersion"].ToString(),
-                        Date = date
                     };
 
-                    //Сохранение в бд.
-                    await _facilityService.Add(facility);
+
+					if (data["Date"] is DBNull obj)
+					{
+						facility.Date = null;
+					}
+					else
+					{
+						facility.Date = DateTime.Parse(data["Date"].ToString());
+					}
+
+					//Сохранение в бд.
+					await _facilityService.Add(facility);
                 }
-            }
+
+				return true;
+			}
             catch (Exception)
             {
                 Debugger.Break();
-                return;
+                return false;
             }
         }
         
@@ -156,8 +162,18 @@ namespace DbManager.Core.Services.DbService
         {
             return Task.Run(async() =>
             {
-                if (paths == null)
+                if (paths == null || paths.Count == 0)
                 {
+                    var facilityes = await _facilityService.GetList();
+                    foreach (var item in facilityes)
+                    {
+                        item.NameElectronicVersion = string.Empty;
+                        item.IsElectronicVersion = false;
+
+                        await _facilityService.SaveOrUpdate(item);
+                    }
+
+
                     return;
                 }
 

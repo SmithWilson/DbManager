@@ -7,151 +7,158 @@ using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DbManager.Core.Services.DbService
 {
-    public class FacilityService : IFacilityService
-    {
-        #region Fields
-        private ManagerContext _context => ManagerContext.Instance;
-        #endregion
+	public class FacilityService : IFacilityService
+	{
+		#region Fields
+		private ManagerContext _context => ManagerContext.Instance;
+		#endregion
 
 
-        #region Methods
-        /// <summary>
-        /// Добавление нового обьекта в бд.
-        /// </summary>
-        /// <param name="facility">Новый обьект.</param>
-        /// <returns></returns>
-        public Task Add(Facility facility)
-        {
-            if (facility == null)
-            {
-                throw new ArgumentNullException(nameof(facility));
-            }
+		#region Methods
+		/// <summary>
+		/// Добавление нового обьекта в бд.
+		/// </summary>
+		/// <param name="facility">Новый обьект.</param>
+		/// <returns></returns>
+		public Task Add(Facility facility)
+		{
+			if (facility == null)
+			{
+				throw new ArgumentNullException(nameof(facility));
+			}
 
-            return Task.Run(() =>
-            {
-                try
-                {
-                    _context.Facilitys.Add(facility);
-                    _context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Не удалось добавить новую запись", ex);
-                }
-            });
-        }
+			return Task.Run(() =>
+			{
+				try
+				{
+					_context.Facilitys.Add(facility);
+					_context.SaveChanges();
+				}
+				catch (Exception ex)
+				{
+					throw new InvalidOperationException("Не удалось добавить новую запись", ex);
+				}
+			});
+		}
 
-        /// <summary>
-        /// Обновление обьекта в бд.
-        /// </summary>
-        /// <param name="facility">Обькт.</param>
-        /// <returns></returns>
-        public Task Change(Facility facility)
-        {
-            if (facility == null)
-            {
-                throw new ArgumentNullException(nameof(facility));
-            }
+		/// <summary>
+		/// Обновление обьекта в бд.
+		/// </summary>
+		/// <param name="facility">Обькт.</param>
+		/// <returns></returns>
+		public Task Change(Facility facility)
+		{
+			if (facility == null)
+			{
+				throw new ArgumentNullException(nameof(facility));
+			}
 
-            return Task.Run(() =>
-            {
-                try
-                {
-                    var newFacility = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
-                    if (newFacility != null)
-                    {
-                        var faciltyType = newFacility.GetType();
-                        foreach (var item in faciltyType.GetProperties().Skip(1))
-                        {
-                            item.SetValue(newFacility, faciltyType.GetProperty(item.Name).GetValue(facility));
-                        }
-                        _context.SaveChanges();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Не удалось обновить существующую запись", ex);
-                }
-            });
-        }
+			return Task.Run(() =>
+			{
+				try
+				{
+					var newFacility = _context.Facilitys.SingleOrDefault(f => f.Id == facility.Id);
+					if (newFacility != null)
+					{
+						var faciltyType = newFacility.GetType();
+						foreach (var item in faciltyType.GetProperties().Skip(1))
+						{
+							item.SetValue(newFacility, faciltyType.GetProperty(item.Name).GetValue(facility));
+						}
+						_context.SaveChanges();
+					}
+				}
+				catch (Exception ex)
+				{
+					throw new InvalidOperationException("Не удалось обновить существующую запись", ex);
+				}
+			});
+		}
 
-        /// <summary>
-        /// Получение данных с помощью SQL-запроса из бд.
-        /// </summary>
-        /// <returns></returns>
-        public Task<DbRawSqlQuery<Facility>> GetResultQuery()
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    return _context.Database.SqlQuery<Facility>("SELECT * FROM Facilities");
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
-                }
-            });
-        }
+		/// <summary>
+		/// Получение данных с помощью SQL-запроса из бд.
+		/// </summary>
+		/// <returns></returns>
+		public Task<DbRawSqlQuery<Facility>> GetResultQuery()
+		{
+			return Task.Run(() =>
+			{
+				try
+				{
+					return _context.Database.SqlQuery<Facility>("SELECT * FROM Facilities");
+				}
+				catch (Exception ex)
+				{
+					throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
+				}
+			});
+		}
 
-        /// <summary>
-        /// Получегте списка обьектов из бд.
-        /// </summary>
-        /// <returns></returns>
-        public Task<List<Facility>> GetList()
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    return _context.Facilitys.ToList();
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
-                }
-            });
-        }
+		/// <summary>
+		/// Получегте списка обьектов из бд.
+		/// </summary>
+		/// <returns></returns>
+		public Task<List<Facility>> GetList()
+		{
+			return Task.Run(() =>
+			{
+				try
+				{
+					return _context.Facilitys.ToList();
+				}
+				catch (Exception ex)
+				{
+					throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
+				}
+			});
+		}
 
-        /// <summary>
-        /// Получение обьектов из бд.
-        /// </summary>
-        /// <param name="count">Количество.</param>
-        /// <param name="offset">Смещение.</param>
-        /// <returns></returns>
-        public Task<IEnumerable<Facility>> Get(int count, int offset)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    return _context.Facilitys.ToList().Skip(offset).Take(count);
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
-                }
-            });
-        }
+		/// <summary>
+		/// Получение обьектов из бд.
+		/// </summary>
+		/// <param name="count">Количество.</param>
+		/// <param name="offset">Смещение.</param>
+		/// <returns></returns>
+		public Task<IEnumerable<Facility>> Get(int count, int offset)
+		{
+			return Task.Run(() =>
+			{
+				try
+				{
+					return _context.Facilitys.ToList().Skip(offset).Take(count);
+				}
+				catch (Exception ex)
+				{
+					throw new InvalidOperationException("Во время получения данных произошла ошибка", ex);
+				}
+			});
+		}
 
-        /// <summary>
-        /// Получение обьекта по Id.
-        /// </summary>
-        /// <param name="id">Id.</param>
-        /// <returns></returns>
-        public Task<Facility> GetById(int id) =>
-            Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.Id == id));
+		/// <summary>
+		/// Получение обьекта по Id.
+		/// </summary>
+		/// <param name="id">Id.</param>
+		/// <returns></returns>
+		public Task<Facility> GetById(int id) =>
+			Task.Run(() => _context.Facilitys.SingleOrDefault(f => f.Id == id));
 
-        /// <summary>
-        /// Получение обьекта по договору.
-        /// </summary>
-        /// <param name="pattern">Договор.</param>
-        /// <returns></returns>
-        public Task<List<Facility>> GetByTreaty(string pattern) =>
-            Task.Run(() => _context.Facilitys.Where(f => f.Treaty.Contains(pattern)).ToList());
+		/// <summary>
+		/// Получение обьекта по договору.
+		/// </summary>
+		/// <param name="pattern">Договор.</param>
+		/// <returns></returns>
+		public Task<List<Facility>> GetByTreaty(string pattern) =>
+			Task.Run(() =>
+			{
+				var param = new System.Data.SqlClient.SqlParameter("@pattern", $"%{pattern}%");
+
+				return _context.Database.SqlQuery<Facility>(
+					$"SELECT * FROM Facilities WHERE Treaty LIKE @pattern OR Name LIKE @pattern", param).ToList();
+			}); 
 
         /// <summary>
         /// Получение обьекта по архивному номеру.
@@ -178,7 +185,7 @@ namespace DbManager.Core.Services.DbService
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException("Во время удаления данных произошла ошибка", ex);
+					throw new InvalidOperationException("Во время удаления данных произошла ошибка", ex);
                 }
             });
         }
@@ -212,16 +219,17 @@ namespace DbManager.Core.Services.DbService
                 catch (Exception ex)
                 {
                     Debugger.Break();
-                    throw new InvalidOperationException($"Во время обновления данных произошла ошибка", ex);
+
+					throw new InvalidOperationException($"Во время обновления данных произошла ошибка", ex);
                 }
             });
         }
 
-        /// <summary>
-        /// Сброс базы данныхю.
-        /// </summary>
-        /// <returns></returns>
-        public Task Reset()
+		/// <summary>
+		/// Сброс ключей и базы данных.
+		/// </summary>
+		/// <returns></returns>
+		public Task Reset()
             => Task.Run(() =>
                 {
                     _context.Database.ExecuteSqlCommand("TRUNCATE TABLE Facilities");

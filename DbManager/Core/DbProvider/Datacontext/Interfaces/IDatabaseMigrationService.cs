@@ -15,7 +15,7 @@ namespace DbManager.Core.DbProvider.Datacontext.Interfaces
         /// </summary>
         /// <param name="path">Путь.</param>
         /// <returns></returns>
-        Task Import(string path);
+        Task<bool> Import(string path);
 
         /// <summary>
         /// Импорт документов.

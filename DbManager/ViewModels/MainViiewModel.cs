@@ -150,6 +150,7 @@ namespace DbManager.ViewModels
         /// <summary>
         /// Поиск по номеру договора.
         /// </summary>
+        //TODO:ДОБАВИТЬ ПОИСК ПО NAME
         public async void OnSearchChanged()
         {
             try
@@ -165,7 +166,12 @@ namespace DbManager.ViewModels
             }
             catch (Exception)
             {
-                Debugger.Break();
+				MessageBox.Show(
+					$"Во время поиска произошла ошибка. Повторите попытку.",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				Search = string.Empty;
                 return;
             }
         }
@@ -260,8 +266,12 @@ namespace DbManager.ViewModels
             }
             catch (Exception ex)
             {
-                Debugger.Break();
-                return;
+				MessageBox.Show(
+					$"Во время дабавления произошла ошибка. Проверьте данные и повторите попытку.",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -282,8 +292,13 @@ namespace DbManager.ViewModels
             }
             catch (Exception ex)
             {
-                Debugger.Break();
-                return;
+				PopupCancel();
+				MessageBox.Show(
+					$"Произошла ошибка при обновлении данных. Повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -300,8 +315,12 @@ namespace DbManager.ViewModels
             }
             catch (Exception ex)
             {
-                Debugger.Break();
-                return;
+				MessageBox.Show(
+					$"Повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -318,9 +337,14 @@ namespace DbManager.ViewModels
                 PopupCancel();
             }
             catch (Exception ex)
-            {
-                Debugger.Break();
-                return;
+			{
+				PopupCancel();
+				MessageBox.Show(
+					$"Во время удаления произошла ошибка. Повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -341,10 +365,14 @@ namespace DbManager.ViewModels
                 await _docxFileService.PutDocFileToDatabase(ItemFacility.Id, path);
                 Initialization();
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                Debugger.Break();
-                return;
+				MessageBox.Show(
+					$"Во время загрузки файла произошла ошибка. Повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -363,10 +391,14 @@ namespace DbManager.ViewModels
             {
                 await _docxFileService.GetDoсFileFromDatabase(ItemFacility.Id, ItemFacility.NameElectronicVersion);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                Debugger.Break();
-                return;
+				MessageBox.Show(
+					$"Во время получения файла произошла ошибка. Повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -378,14 +410,23 @@ namespace DbManager.ViewModels
         {
             try
             {
-                await _migrationService.Import(await _fileDialogService.OpenDialog());
-                await _migrationService.ImportFiles(await _fileDialogService.OpenDialogGetFiles());
+                var result = await _migrationService.Import(await _fileDialogService.OpenDialog());
+				if (result)
+				{
+					await _migrationService.ImportFiles(await _fileDialogService.OpenDialogGetFiles()); 
+				}
                 Initialization();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Debugger.Break();
-                return;
+				MessageBox.Show(
+					$"Во время импорта произошла ошибка. Проверьте данные и повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning,
+					MessageBoxResult.OK,
+					MessageBoxOptions.ServiceNotification);
+				return;
             }
         }
 
@@ -400,10 +441,14 @@ namespace DbManager.ViewModels
                 var facilitys = await _facilityService.GetList();
                 await _migrationService.Export(facilitys.ToDataTable(), facilitys.ToFileInfo());
             }
-            catch (Exception)
-            {
-                Debugger.Break();
-                return;
+            catch (Exception ex)
+			{
+				MessageBox.Show(
+					$"Во время экспорта произошла ошибка. Проверьте данные и повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -419,10 +464,15 @@ namespace DbManager.ViewModels
                 var facilitys = await _facilityService.GetList();
                 print.Print(facilitys.ToDataTable());
             }
-            catch (Exception)
-            {
-                Debugger.Break();
-                return;
+            catch (Exception ex)
+			{
+				PopupCancel();
+				MessageBox.Show(
+					$"Во время печати произошла ошибка. Проверьте принтер, соединение, данные и повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -440,10 +490,15 @@ namespace DbManager.ViewModels
                 print.Print(facilitys.Where(f => f.Date.Value.Year == Year).ToList().ToDataTable());
                 Year = 0;
             }
-            catch (Exception)
-            {
-                Debugger.Break();
-                return;
+            catch (Exception ex)
+			{
+				PopupCancel();
+				MessageBox.Show(
+					$"Во время печати произошла ошибка. Проверьте введеный год и повторите попытку.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
 
@@ -478,8 +533,13 @@ namespace DbManager.ViewModels
                 var right = await _rootPasswordService.Rigth(Password);
                 if (!right)
                 {
-                    Password = "Не верный пароль.";
-                }
+					PopupCancel();
+					MessageBox.Show(
+					   $"Неверный пароль.",
+					   "Ошибка",
+					   MessageBoxButton.OK,
+					   MessageBoxImage.Warning);
+				}
                 else
                 {
                     LoginPopup = false;
@@ -505,9 +565,14 @@ namespace DbManager.ViewModels
             {
                 var result = await _rootPasswordService.Change(OldPassword, NewPassword);
                 if (!result)
-                {
-                    OldPassword = "Не верный пароль.";
-                }
+				{
+					PopupCancel();
+					MessageBox.Show(
+					$"Неверный пароль.",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				}
                 else
                 {
                     ChangePasswordPopup = false;
@@ -533,10 +598,15 @@ namespace DbManager.ViewModels
                 Root = false;
                 ExitPopup = false;
             }
-            catch (Exception)
-            {
-                Debugger.Break();
-                return;
+            catch (Exception ex)
+			{
+				PopupCancel();
+				MessageBox.Show(
+					$"Ошибка авторизации, как гость.\nДетали - {ex.Message}",
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+				return;
             }
         }
         #endregion
